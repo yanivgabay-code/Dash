@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Customer Pitch — Postman Products</title>
+<style>
+  :root{
+    --orange:#FF6C37;
+    --ink:#1C1C1E;
+    --grey:#5B5F66;
+    --line:#E6E4E0;
+    --bg-card:#FBFAF8;
+    --bg-page:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg-page);
+    color:var(--ink);
+    font-family:"Segoe UI","Arial Hebrew","Noto Sans Hebrew",Arial,sans-serif;
+    line-height:1.7;
+  }
+  header.top{
+    padding-bottom:28px;
+    border-bottom:3px solid var(--orange);
+    margin-bottom:36px;
+  }
+  header.top h1{font-size:26px;margin:0 0 8px;}
+  header.top p{color:var(--grey);margin:0;font-size:15px;}
+  h2{font-size:20px;margin:52px 0 6px;display:flex;align-items:baseline;gap:10px;}
+  h2 .num{color:var(--orange);font-size:20px;}
+  .lead{color:var(--grey);font-size:15px;margin:0 0 22px;}
+  .stage-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px;}
+  .stage{background:var(--bg-card);border:1px solid var(--line);border-radius:8px;padding:14px 12px;box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  .stage.core{border-color:var(--orange);background:#FFF6F1;}
+  .stage .n{font-size:12px;color:var(--grey);}
+  .stage .t{font-weight:600;font-size:15px;margin:2px 0 6px;}
+  .stage .who{font-size:12px;color:var(--grey);margin-bottom:6px;}
+  .stage .d{font-size:13px;}
+  .say{
+    background:#F3F7F5;
+    border-left:3px solid #2E7D5B;
+    border-radius:6px;
+    padding:12px 16px;
+    margin:16px 0;
+    font-size:14.5px;
+  }
+  .say b.tag{color:#2E7D5B;display:block;font-size:12px;margin-bottom:4px;}
+  .offer-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;}
+  .offer{background:var(--bg-card);border:1px solid var(--line);border-radius:8px;padding:16px 18px;box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  .offer .t{font-weight:700;color:var(--orange);font-size:14px;margin-bottom:8px;}
+  .offer p{margin:0;font-size:13.5px;}
+  .cross-box{margin-top:14px;background:#FFF6F1;border:1px solid #FFD9C7;border-radius:8px;padding:14px 18px;font-size:13.5px;}
+  .cross-box b{color:var(--orange);}
+  .group-title{font-size:14px;font-weight:700;color:var(--grey);margin:26px 0 10px;}
+  .prod{border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin-bottom:12px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  .prod .name{font-weight:700;font-size:15.5px;margin-bottom:8px;}
+  .prod .pitch{font-size:14px;}
+  .obj{border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin-bottom:10px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  .obj .q{font-weight:600;font-size:14px;margin-bottom:6px;}
+  .obj .a{font-size:13.5px;color:var(--grey);}
+  .final{margin-top:56px;padding:22px 22px 6px;border-top:3px solid var(--ink);}
+  .final h2{margin-top:0;}
+  .final p{font-size:14.5px;}
+  .final ul{font-size:14.5px;padding-left:20px;}
+  .final li{margin-bottom:8px;}
+  .ai-box{
+    background:#FFF6F1;
+    border:1px solid #FFD9C7;
+    border-radius:6px;
+    padding:20px 22px;
+    margin:18px 0;
+  }
+  .ai-box .h{font-weight:700;color:var(--orange);font-size:15px;margin-bottom:8px;}
+  .ai-box p{font-size:14.5px;margin:0 0 12px;}
+  .ai-box p:last-child{margin-bottom:0;}
+  @media (max-width:720px){
+    .stage-row{grid-template-columns:1fr 1fr;}
+    .offer-grid{grid-template-columns:1fr;}
+  }
+
+  /* --- app shell: framed container + top bar + 3-column layout --- */
+  html, body{height:100%;}
+  body{overflow:hidden;background:#E3E6EA;}
+  .wrap{max-width:880px;margin:20px auto 40px;padding:32px 34px 60px;background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(20,20,20,0.06);}
+
+  #app-frame{
+    position:fixed;
+    inset:18px;
+    background:#fff;
+    border-radius:14px;
+    box-shadow:0 12px 40px rgba(20,22,30,0.18);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    direction:ltr;
+  }
+
+  #edit-toolbar{
+    flex-shrink:0;
+    height:52px;
+    background:var(--ink);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 18px;
+    font-size:13px;
+    direction:ltr;
+  }
+  #doc-title{font-weight:700;font-size:14px;margin-right:12px;white-space:nowrap;}
+  #edit-toolbar button{
+    background:var(--orange);
+    color:#fff;
+    border:none;
+    border-radius:5px;
+    padding:6px 14px;
+    font-size:13px;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  #edit-toolbar button:disabled{background:#6B6B6E;cursor:default;}
+  #edit-toolbar button.secondary{background:#3A3A3C;}
+  #edit-toolbar .status{color:#B9B9BC;font-size:12px;margin-left:auto;}
+  #edit-toolbar .fmt-group{display:flex;gap:4px;padding-left:10px;border-left:1px solid #4A4A4C;}
+  #edit-toolbar .fmt-group button{
+    background:#3A3A3C;
+    min-width:32px;
+    padding:6px 10px;
+    font-weight:700;
+  }
+  #edit-toolbar .fmt-group button:hover{background:#4A4A4C;}
+  #edit-toolbar #italic-btn{font-style:italic;}
+  #edit-toolbar .swatch{
+    width:22px;
+    height:22px;
+    border-radius:4px;
+    border:2px solid #ffffff33;
+    cursor:pointer;
+    padding:0;
+  }
+  #edit-toolbar .swatch:hover{border-color:#fff;}
+
+  .edit-unit{
+    outline:2px dashed transparent;
+    border-radius:3px;
+    transition:outline-color .15s, background-color .15s;
+  }
+  .edit-unit[contenteditable="true"]:hover{
+    outline-color:#FFD9C7;
+    background-color:rgba(255,108,55,0.04);
+  }
+  .edit-unit[contenteditable="true"]:focus{
+    outline-color:var(--orange);
+    outline-style:solid;
+  }
+  .pitch-open{
+    background:#FFF6F1;
+    border:1px solid #FFD9C7;
+    border-radius:8px;
+    padding:20px 22px;
+    margin-bottom:8px;
+    font-size:15px;
+    box-shadow:0 1px 2px rgba(20,20,20,0.04);
+  }
+  .pitch-open .tag{color:var(--orange);font-weight:700;font-size:13px;margin-bottom:8px;display:block;}
+
+  #app-shell{
+    flex:1;
+    display:flex;
+    min-height:0;
+    direction:ltr;
+  }
+
+  /* --- left sidebar: topics nav --- */
+  #left-nav{
+    width:190px;
+    flex-shrink:0;
+    background:#FAFAFB;
+    border-right:1px solid var(--line);
+    padding:18px 12px;
+    overflow-y:auto;
+  }
+  #left-nav .nav-title{
+    font-weight:700;
+    color:var(--grey);
+    font-size:11.5px;
+    margin-bottom:10px;
+    padding:0 6px;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+  }
+  #left-nav .nav-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    color:var(--ink);
+    padding:10px 10px;
+    border-radius:6px;
+    font-size:14.5px;
+    font-weight:700;
+    font-family:inherit;
+    cursor:pointer;
+    margin-bottom:2px;
+  }
+  #left-nav .nav-item:hover{background:#FFF6F1;color:var(--orange);}
+  #left-nav .nav-item.active{background:#FFF1E8;color:var(--orange);border-left:3px solid var(--orange);padding-left:7px;}
+  #left-nav .nav-sep{height:1px;background:var(--line);margin:10px 4px;}
+  #left-nav .nav-panel .arrow{color:var(--orange);font-size:12px;}
+  #left-nav .nav-item.active .arrow{color:var(--orange);}
+  .nav-item-row{display:flex;align-items:center;gap:2px;}
+  .nav-item-row .nav-item{flex:1;margin-bottom:0;}
+  .chevron-btn{
+    background:none;
+    border:none;
+    color:var(--grey);
+    font-size:13px;
+    cursor:pointer;
+    padding:6px 6px;
+    border-radius:5px;
+    transition:transform .15s;
+  }
+  .chevron-btn:hover{color:var(--orange);}
+  .chevron-btn.open{transform:rotate(180deg);}
+  .nav-submenu{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .2s ease;
+  }
+  .nav-submenu.open{max-height:400px;overflow-y:auto;}
+  .nav-subitem{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    color:var(--ink);
+    padding:7px 10px 7px 10px;
+    padding-left:22px;
+    border-radius:5px;
+    font-size:13px;
+    font-weight:600;
+    font-family:inherit;
+    cursor:pointer;
+    margin-bottom:1px;
+  }
+  .nav-subitem:hover{background:#FFF6F1;color:var(--orange);}
+  @media (max-width:900px){
+    #left-nav{display:none;}
+  }
+
+  /* --- center column: the actual document --- */
+  #center-content{
+    flex:1;
+    overflow-y:auto;
+    min-width:0;
+    background:#F6F6F7;
+  }
+
+  /* --- right sidebar: docked chat --- */
+  #chat-panel{
+    width:300px;
+    flex-shrink:0;
+    background:#fff;
+    border-left:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+  }
+  @media (max-width:1100px){
+    #chat-panel{display:none;}
+  }
+  .chat-header{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:14px 16px;
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  .chat-header-icon{font-size:18px;}
+  .chat-header-title{font-weight:700;font-size:14px;}
+  .chat-quick{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  .chat-quick-btn{
+    text-align:left;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:12px;
+    font-family:inherit;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .chat-quick-btn:hover{border-color:var(--orange);color:var(--orange);}
+  #chat-log{
+    flex:1;
+    overflow-y:auto;
+    padding:14px 16px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .chat-placeholder{color:var(--grey);font-size:13px;}
+  .chat-msg{
+    max-width:92%;
+    padding:9px 12px;
+    border-radius:8px;
+    font-size:13.5px;
+    line-height:1.55;
+    white-space:pre-wrap;
+  }
+  .chat-msg.user{
+    align-self:flex-start;
+    background:var(--ink);
+    color:#fff;
+  }
+  .chat-msg.bot{
+    align-self:flex-end;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    color:var(--ink);
+  }
+  .chat-msg.bot.loading{color:var(--orange);}
+  .chat-msg.bot.err{color:#D64545;border-color:#D64545;}
+  #chat-input-row{
+    display:flex;
+    gap:8px;
+    padding:12px;
+    border-top:1px solid var(--line);
+    flex-shrink:0;
+  }
+  #chat-question{
+    flex:1;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:13.5px;
+    font-family:inherit;
+    resize:none;
+  }
+  #chat-send{
+    background:var(--orange);
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    padding:0 16px;
+    font-size:13px;
+    cursor:pointer;
+  }
+  #chat-send:disabled{background:#B9B9BC;cursor:default;}
+  .chat-disclaimer{
+    font-size:10.5px;
+    color:var(--grey);
+    padding:0 16px 12px;
+    flex-shrink:0;
+  }
+
+  /* --- slide-in side panels (objections / Fabric / Passport / ASA) ---
+     position:absolute here (not fixed) so they're contained inside
+     #app-frame — which is the nearest positioned ancestor — instead of
+     the raw browser viewport. */
+  #panel-backdrop{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.25);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s;
+    z-index:996;
+  }
+  #panel-backdrop.open{opacity:0;pointer-events:auto;}
+  /* Floating, draggable window instead of an edge-anchored drawer.
+     Position is top/left from the start, since dragging math needs
+     one consistent anchor pair — JS moves it by just rewriting these
+     two values. */
+  .side-panel{
+    position:absolute;
+    top:20px;
+    left:40px;
+    width:480px;
+    height:calc(100% - 40px);
+    max-width:92%;
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.28);
+    opacity:0;
+    visibility:hidden;
+    transform:scale(0.96);
+    transition:opacity .15s ease, transform .15s ease;
+    z-index:997;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .side-panel.open{opacity:1;visibility:visible;transform:scale(1);}
+  .panel-header{
+    background:var(--ink);
+    color:#fff;
+    padding:14px 18px;
+    font-size:16px;
+    font-weight:700;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-shrink:0;
+    cursor:grab;
+    user-select:none;
+  }
+  .panel-header:active{cursor:grabbing;}
+  .panel-header .panel-close{
+    background:none;
+    border:none;
+    color:#fff;
+    font-size:18px;
+    cursor:pointer;
+  }
+  .panel-body{
+    padding:20px;
+    overflow-y:auto;
+    flex:1;
+  }
+  .panel-list{margin:0 0 16px;padding-left:20px;font-size:14px;}
+  .panel-list li{margin-bottom:8px;}
+  .panel-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12.5px;
+    margin-top:10px;
+  }
+  .panel-table th, .panel-table td{
+    border:1px solid var(--line);
+    padding:8px;
+    text-align:left;
+    vertical-align:top;
+  }
+  .panel-table th{background:var(--bg-card);font-weight:700;}
+
+  /* --- floating answer window for the AI chat --- */
+  #answer-panel{
+    left:auto;
+    right:24px;
+  }
+  .answer-body{
+    display:flex;
+    flex-direction:column;
+    padding:0;
+    overflow:hidden;
+  }
+  .answer-toolbar{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    padding:10px 14px;
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+    flex-wrap:wrap;
+  }
+  .answer-toolbar button{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:5px;
+    min-width:28px;
+    padding:5px 8px;
+    font-size:12.5px;
+    font-weight:700;
+    font-family:inherit;
+    cursor:pointer;
+    color:var(--ink);
+  }
+  .answer-toolbar button:hover{background:#FFF6F1;border-color:var(--orange);}
+  .answer-toolbar #ans-italic-btn{font-style:italic;}
+  .ans-swatch{
+    width:22px;
+    height:22px;
+    min-width:22px;
+    padding:0;
+    border-radius:50%;
+    border:1px solid var(--line);
+    cursor:pointer;
+  }
+  .ans-swatch:hover{border-color:var(--ink);}
+  .ans-save-btn{
+    margin-left:auto;
+    background:var(--orange) !important;
+    color:#fff !important;
+    border:none !important;
+  }
+  .ans-save-btn:hover{background:#E85A28 !important;}
+  .answer-question{
+    padding:12px 18px 0;
+    color:var(--grey);
+    font-size:12.5px;
+    font-style:italic;
+    flex-shrink:0;
+  }
+  .answer-content{
+    padding:12px 18px 20px;
+    overflow-y:auto;
+    flex:1;
+    font-size:14px;
+    line-height:1.6;
+    white-space:pre-wrap;
+  }
+  .answer-content.loading{color:var(--grey);}
+  .answer-content:focus{outline:2px solid #FFD9C7;outline-offset:-2px;}
+</style>
+</head>
+<body>
+<div id="app-frame">
+<div id="edit-toolbar">
+<span id="doc-title">Customer Call Script — Postman</span>
+<button disabled="" id="undo-btn">↩ Undo last change</button>
+<button class="secondary" id="download-btn">⬇ Download updated file</button>
+<button class="secondary" id="toggle-btn">🔒 Lock editing</button>
+<div class="fmt-group">
+<button id="bold-btn" title="Bold (select text and click)">B</button>
+<button id="italic-btn" title="Italic (select text and click)">I</button>
+<button id="dec-font-btn" title="Decrease text size (select text and click)">A-</button>
+<button id="inc-font-btn" title="Increase text size (select text and click)">A+</button>
+<input id="color-input" title="Text color (select text and choose a color)" type="color" value="#1C1C1E"/>
+<button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="Black"></button>
+<button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="Orange"></button>
+<button class="swatch" data-color="#D64545" style="background:#D64545" title="Red"></button>
+<button class="swatch" data-color="#2E7D5B" style="background:#2E7D5B" title="Green"></button>
+<button class="swatch" data-color="#2F6FED" style="background:#2F6FED" title="Blue"></button>
+<button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="Grey"></button>
+</div>
+<span class="status" id="save-status"></span>
+</div>
+<div id="panel-backdrop"></div>
+<div id="app-shell">
+<nav id="left-nav">
+<div class="nav-title">Topics</div>
+<button class="nav-item" data-scroll="sec-pitch">Opening Pitch</button>
+<button class="nav-item" data-scroll="sec-process">The Process</button>
+<button class="nav-item" data-scroll="sec-ai">AI</button>
+<button class="nav-item" data-scroll="sec-stages">What We Offer</button>
+<div class="nav-item-row">
+<button class="nav-item" data-scroll="sec-products">Core Products</button>
+<button class="chevron-btn" data-toggle="submenu-products" title="Show all products">⌄</button>
+</div>
+<div class="nav-submenu" id="submenu-products">
+<button class="nav-subitem" data-scroll="prod-organizations">Organizations</button>
+<button class="nav-subitem" data-scroll="prod-api-catalog">API Catalog</button>
+<button class="nav-subitem" data-scroll="prod-private-network">Private API Network</button>
+<button class="nav-subitem" data-scroll="prod-governance-builder">Governance Rule Builder</button>
+<button class="nav-subitem" data-scroll="prod-secret-scanner">Secret Scanner</button>
+<button class="nav-subitem" data-scroll="prod-vault">Postman Vault</button>
+<button class="nav-subitem" data-scroll="prod-insights">Insights</button>
+<button class="nav-subitem" data-scroll="prod-api-reports">API Reports</button>
+<button class="nav-subitem" data-scroll="prod-agent-mode">Agent Mode</button>
+<button class="nav-subitem" data-scroll="prod-git-workflows">Native Git Workflows</button>
+<button class="nav-subitem" data-scroll="prod-cli-pipeline">CLI + Pipeline</button>
+<button class="nav-subitem" data-scroll="prod-mock-servers">Mock Servers</button>
+<button class="nav-subitem" data-scroll="prod-partner-workspaces">Partner Workspaces</button>
+<button class="nav-subitem" data-scroll="prod-asa">ASA</button>
+<button class="nav-subitem" data-scroll="prod-fabric-inline">Fabric</button>
+<button class="nav-subitem" data-scroll="prod-passport-inline">Passport</button>
+</div>
+<div class="nav-sep"></div>
+<button class="nav-item nav-panel" data-open-panel="panel-objections"><span>Positioning &amp; Objections</span><span class="arrow">↗</span></button>
+<button class="nav-item nav-panel" data-open-panel="panel-fabric"><span>Fabric</span><span class="arrow">↗</span></button>
+<button class="nav-item nav-panel" data-open-panel="panel-passport"><span>Passport</span><span class="arrow">↗</span></button>
+<button class="nav-item nav-panel" data-open-panel="panel-asa"><span>ASA</span><span class="arrow">↗</span></button>
+<button class="nav-item nav-panel" data-open-panel="panel-database"><span>DATABASE</span><span class="arrow">↗</span></button>
+</nav>
+<main id="center-content">
+<div class="wrap" id="editable-root">
+<header class="top" id="sec-pitch">
+<h1 class="edit-unit" contenteditable="false">Customer Call Script — Postman Products</h1>
+</header>
+<!-- SECTION 0: 30-SECOND OPENING PITCH -->
+<section>
+<h2 class="edit-unit" contenteditable="false"><span class="num"><br/></span> Opening Pitch — 30 Seconds</h2>
+<div class="pitch-open edit-unit" contenteditable="false">
+<span class="tag"><span style="font-size: 15px; color: rgb(28, 28, 30);">"Great. Give me 30 seconds to explain how companies deal with this today.</span></span>
+      Building APIs is no longer really the hard part. <b>The challenge starts</b> when APIs grow across multiple teams, products, and environments.<br/>
+      At that stage, organizations typically run into the same problems: <b>no visibility into what already exists, inconsistent documentation and testing, duplicated work across teams, and Governance and security requirements that keep growing.</b><br/>
+      Recently, AI initiatives have exposed these problems even more, because AI applications depend on APIs that are discoverable, reliable, and properly documented.<br/>
+<span style="color: rgb(29, 27, 27);"><span style="color: rgb(197, 27, 27);"><b><span style="color: rgb(241, 168, 9);"><span style="color: rgb(197, 143, 27);"><span style="color: rgb(197, 18, 253);">This is exactly where Postman comes into the picture</span></span></span></b></span></span>. <b>Postman is a comprehensive platform where teams can design, test, document, discover, and govern APIs</b> — instead of managing all of that across fragmented tools and processes.<br/>
+      Whether you're at the prototype stage for an idea, or scaling a system that's already in production — Postman gives you the tools you need at every stage of the API lifecycle.<br/>
+      So yes — our solution is far more than just sending requests. We support the entire API lifecycle, from design and documentation through to monitoring, automation, and Governance."
+    </div>
+</section>
+<!-- SECTION 1: THE PROCESS -->
+<section id="sec-process">
+<h2 class="edit-unit" contenteditable="false"><span class="num">1</span> The Process: How Software Gets Built Today</h2>
+<p class="lead edit-unit" contenteditable="false">Every development organization - Waterfall, Agile, or CI/CD - actually goes through these five stages. The only question is whether they’re connected or isolated.</p>
+<div class="stage-row">
+<div class="stage core">
+<div class="n">01</div>
+<div class="t edit-unit" contenteditable="false">Design</div>
+<div class="who edit-unit" contenteditable="false">Architects, API Product Managers</div>
+<div class="d edit-unit" contenteditable="false">Spec out exactly what the API does and which Governance rules apply to it — before a single line of code is written.</div>
+</div>
+<div class="stage core">
+<div class="n">02</div>
+<div class="t edit-unit" contenteditable="false">Develop</div>
+<div class="who edit-unit" contenteditable="false">Developers</div>
+<div class="d edit-unit" contenteditable="false">Write the actual code, go through code review, and integrate components.</div>
+</div>
+<div class="stage core">
+<div class="n">03</div>
+<div class="t edit-unit" contenteditable="false">Test</div>
+<div class="who edit-unit" contenteditable="false">Quality Engineers</div>
+<div class="d edit-unit" contenteditable="false">Verify everything works as designed — manually and automatically.</div>
+</div>
+<div class="stage">
+<div class="n">04</div>
+<div class="t edit-unit" contenteditable="false">Deploy</div>
+<div class="who edit-unit" contenteditable="false">DevOps, Platform</div>
+<div class="d edit-unit" contenteditable="false">Go through an approval gate, then ship to production.</div>
+</div>
+<div class="stage">
+<div class="n">05</div>
+<div class="t edit-unit" contenteditable="false">Monitor</div>
+<div class="who edit-unit" contenteditable="false">Platform Engineer</div>
+<div class="d edit-unit" contenteditable="false">Track the system in real time — alerts, SLA compliance.</div>
+</div>
+</div>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag"><br/><span style="font-size: 14.5px; color: rgb(28, 28, 30);">"I always focus the conversation on stages 1 through 3 — design, development, and testing — because that’s where a mistake costs the least to fix. Deployment and monitoring are additional value we’ll add later, but they’re not the core of what I want you to see today."</span></b></div>
+</section>
+<!-- SECTION 2: AI SHIFT — EXPANDED -->
+<section id="sec-ai">
+<h2 class="edit-unit" contenteditable="false"><span class="num">2</span> AI: The Topic Every Customer Wants to Talk About Today</h2>
+<p class="lead edit-unit" contenteditable="false"><i>This is the part I give the most time to in the conversation — because it’s what’s on the mind of every CTO, VP Engineering, and CISO I meet in 2026.</i></p>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag"><br/><span style="font-size: 14.5px; color: rgb(28, 28, 30);">"I want to pause for a moment and talk about AI, because today it’s really a turning point for almost every organization. AI doesn’t change these five stages — it just massively increases the speed at which you move through them. And when speed goes up, every crack that already existed gets bigger, and faster."</span></b></div>
+<div class="ai-box">
+<div class="h edit-unit" contenteditable="false">Speed vs. Quality</div>
+<p class="edit-unit" contenteditable="false">"Your developers are already using tools like Copilot or Cursor to write code — and that’s great for speed. The problem is that testing throughput doesn’t grow at the same pace. You get more code, but not more verification that it’s correct. And that’s exactly the gap that causes the spike in bugs reaching production."</p>
+<div class="h edit-unit" contenteditable="false">APIs Built for Humans, Not AI Agents</div>
+<p class="edit-unit" contenteditable="false">"Here's a point most companies don't think about at all: when an AI agent is the one consuming your API instead of a human developer, it needs a different kind of spec. An AI agent doesn't 'understand from context' like a developer does — it needs to be told explicitly which actions are possible and what their constraints are. If your API isn't written that way, the agent will simply misuse it — and you won't know until it happens in production."</p>
+<div class="h edit-unit" contenteditable="false">Governance as the Bottleneck</div>
+<p class="edit-unit" contenteditable="false">"And when everything runs faster, Governance and security become the organization's bottleneck. Audit evidence documentation turns from an ongoing process into a manual scramble once a quarter. And nobody wants to do that under pressure."</p>
+<div class="h edit-unit" contenteditable="false">A Stat I Open With</div>
+<p class="edit-unit" contenteditable="false">"89 percent of developers already use AI to write code. Only 24 percent of them even design their API so that an AI agent will know how to use it correctly. That's the gap we close."</p>
+</div>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">How I continue into the AI part of our own product</b>
+      "And that brings me to the point our customers love the most: the AI inside Postman isn't like a general ChatGPT. We call it <b>Agent Mode</b>, and it's built specifically for the API world. <div>It runs inside your Postman environment, knows all the projects, tests, and alerts you already have, and doesn't just answer questions but actually takes action: writes new contracts, fixes broken tests, and detects when a new version breaks a promise you made to someone in the past.</div><div><br/></div><div>There's also <b>AI Engineer</b>, which connects to wherever all your code and its history is kept (Git) and does more independent work.</div><div>For example, going through all your APIs and flagging which ones should be deprecated because they're old or unused, or automatically checking every new code change a developer pushes to the system, before it's merged. </div><div>And you can also build the Governance rules themselves with the help of AI — write them in Claude or ChatGPT, and Postman is what actually enforces them automatically, across every project, all the time. </div><div>And that's really the real difference: <b>you could do some of this yourselves, or buy several separate tools — but we put it all under one roof."
+    </b></div>
+</div></section>
+<!-- SECTION 3: WHAT POSTMAN OFFERS PER STAGE -->
+<section id="sec-stages">
+<h2 class="edit-unit" contenteditable="false"><span class="num">3</span> What We Have to Offer - Stage by Stage</h2>
+<p class="lead edit-unit" contenteditable="false"><b>"This is what I call the golden path: at every stage there’s a tool that automatically enforces what we defined in the previous stage - so you’re not checking it again later."</b></p>
+<div class="offer-grid">
+<div class="offer">
+<div class="t edit-unit" contenteditable="false">01 · Design</div>
+<p class="edit-unit" contenteditable="false">"You spec out ahead of time what the API is supposed to do — like a proper contract before you start actually building — and there’s AI that helps write and fix that contract. You can also set a rule like ‘every request must have identity verification,’ and it doesn’t stay a recommendation someone has to remember to check — it’s enforced automatically. And while the backend team is still building the real system, the frontend team can already start working against a simulated version that behaves like the real API (Mock Server), so they don’t have to wait."</p>
+</div>
+<div class="offer">
+<div class="t edit-unit" contenteditable="false">02 · Development</div>
+<p class="edit-unit" contenteditable="false">"Every time a developer writes code, we have a tool running in the background that automatically checks the code still complies with the contract defined in the design stage — just like a spell-checker that runs while you write a document, except it checks logic instead of typos. And if someone changes something that’s about to break a promise someone else already relies on — it’s caught in that same moment, before the code even enters the product, unlike traditional testing where you find out two weeks later."</p>
+</div>
+<div class="offer">
+<div class="t edit-unit" contenteditable="false">03 · Testing</div>
+<p class="edit-unit" contenteditable="false">"There’s a tool that automatically runs a whole suite of tests at the click of a button, and there’s an AI assistant that builds basic tests directly from the contract you wrote at the design stage, and even fixes a broken test. You can also test what happens under high load — for example what happens if there’s suddenly a lot more users, like on a big sale day."</p>
+</div>
+<div class="offer">
+<div class="t edit-unit" contenteditable="false">04–05 · Deployment &amp; Monitoring</div>
+<p class="edit-unit" contenteditable="false">"There are automated checks running constantly on the APIs facing the outside world, to make sure they’re actually responding and working. There’s a parallel version that runs inside your internal network, behind all the security layers, for APIs that aren’t open to the world. And Insights identifies gaps based on the actual real traffic happening in practice."</p>
+</div>
+</div>
+<div class="cross-box edit-unit" contenteditable="false"><b>
+      "Two things you should know — they don’t belong to one stage, they run across all of them: </b><div><b>API Catalog</b> gives you a single view of every API in development across the organization — not just the ones already live on a gateway in production. That’s the key difference between us and Kong, Apigee, or Boomi — they show you only what’s already running, we also show you what’s being built.</div><div> And <b>Agent Mode</b> with <b>AI Engineer</b> are available at every stage — not general-purpose assistants, but tools that know your context and actually take action."
+    </div></div>
+</section>
+<!-- SECTION 4: CORE PRODUCTS -->
+<section id="sec-products">
+<h2 class="edit-unit" contenteditable="false"><span class="num">4</span> Core Products — What I Say About Each One</h2>
+<div class="group-title edit-unit" contenteditable="false">API &amp; Service Management</div>
+<div class="prod" id="prod-organizations">
+<div class="name edit-unit" contenteditable="false">Organizations — Organizational Management</div>
+<div class="pitch edit-unit" contenteditable="false">"This is the management layer that determines who can access what — teams, permissions, and unified Governance across the whole organization. Think of a bank with 40 development teams: Organizations lets me set it up so the payments team can’t touch the HR workspace at all — without anyone having to manage that manually every day."</div>
+</div>
+<div class="prod" id="prod-api-catalog">
+<div class="name edit-unit" contenteditable="false">API Catalog</div>
+<div class="pitch edit-unit" contenteditable="false">"This is one central view of all your APIs and services — who owns them, what their CI status is, what their error rate is in production. If your platform manager wants to know which APIs don’t meet the security standard, they get a compliance score for each one — without manually searching through 20 workspaces."</div>
+</div>
+<div class="prod" id="prod-private-network">
+<div class="name edit-unit" contenteditable="false">Private API Network</div>
+<div class="pitch edit-unit" contenteditable="false">"You publish approved internal APIs so other teams in the organization can find and use them — without exposing them to the outside world. If one team already built an API for identity verification, another team doesn’t build it from scratch because they simply didn’t know it existed."</div>
+</div>
+<div class="prod" id="prod-governance-builder">
+<div class="name edit-unit" contenteditable="false">Governance Rule Builder</div>
+<div class="pitch edit-unit" contenteditable="false">"Here you write a custom rule — for example, that every endpoint must have an Authorization field — and it’s enforced automatically, not as a recommendation, but as an actual block. A financial body can set a rule that forbids returning a full credit card number in a response, and that rule runs on every new spec, before it even reaches human review."</div>
+</div>
+<div class="prod" id="prod-secret-scanner">
+<div class="name edit-unit" contenteditable="false">Secret Scanner — Local Secrets Scanner</div>
+<div class="pitch edit-unit" contenteditable="false">"This catches keys and secrets that were accidentally exposed — say, an API key a developer pasted in during a quick test — and routes them to the local Vault before they even reach Git. It’s caught before commit, not discovered in a security review six months later."</div>
+</div>
+<div class="prod" id="prod-vault">
+<div class="name edit-unit" contenteditable="false">Postman Vault — Secrets Vault</div>
+<div class="pitch edit-unit" contenteditable="false">"A central, secure place to store and share secrets within a team — without the value itself being exposed to the team members using it. Two developers need the same API key to work on the same workspace — both use it, and neither of them ever sees it in plain text."</div>
+</div>
+<div class="group-title edit-unit" contenteditable="false">Production Monitoring</div>
+<div class="prod" id="prod-insights">
+<div class="name edit-unit" contenteditable="false">Insights — Usage Insights</div>
+<div class="pitch edit-unit" contenteditable="false">"A unified picture of usage, adoption, and API activity across the whole organization — internal, partner, and public. If an engineering manager wants to know which APIs haven’t been used at all for six months before deciding on next year’s budget — it takes a few clicks, not a project."</div>
+</div>
+<div class="prod" id="prod-api-reports">
+<div class="name edit-unit" contenteditable="false">API Reports</div>
+<div class="pitch edit-unit" contenteditable="false">"A unified report showing usage, adoption, and impact across internal, partner, and public workspaces — instead of scattered reports for each workspace separately. Before a contract renewal, this is the report that shows leadership how many APIs actually got used this past quarter."</div>
+</div>
+<div class="group-title edit-unit" contenteditable="false">Development &amp; Testing</div>
+<div class="prod" id="prod-agent-mode">
+<div class="name edit-unit" contenteditable="false">Agent Mode — Built-in AI Assistant</div>
+<div class="pitch edit-unit" contenteditable="false">"This isn’t a general assistant like ChatGPT — it’s built specifically for the API world, runs inside your Postman environment, and knows all the projects, tests, and alerts you already have. A developer asks ‘check if this version breaks a promise made to someone in the previous version’ — Agent Mode doesn’t just answer, it actually runs the comparison on the real code and shows a result."</div>
+</div>
+<div class="prod" id="prod-git-workflows">
+<div class="name edit-unit" contenteditable="false">Native Git Workflows</div>
+<div class="pitch edit-unit" contenteditable="false">"Just like Google Docs keeps previous versions of a document, and lets several people work on it in parallel without overwriting each other — we manage versions of the API specs themselves the same way, using the same method developers already know from code management (Git). Two developers can change the same spec in parallel, each in their own branch, and merge the changes at the end without losing anything."</div>
+</div>
+<div class="prod" id="prod-cli-pipeline">
+<div class="name edit-unit" contenteditable="false">CLI &amp; Pipeline Integration</div>
+<div class="pitch edit-unit" contenteditable="false">"These are the exact same tests that run both when a developer checks it manually on their own machine, and when the automated system that ships the code to production runs them again, hands-free (in technical terms this is called CI/CD). So there’s no ‘it worked on my machine’ followed by it breaking on the server — it’s the exact same test, twice."</div>
+</div>
+<div class="prod" id="prod-mock-servers">
+<div class="name edit-unit" contenteditable="false">Mock Servers</div>
+<div class="pitch edit-unit" contenteditable="false">"Simulates a complete API without a real backend, so the frontend team can start working before the real code even exists. They need a screen showing payments, and the backend is still mid-development — Mock Server returns simulated responses based on the spec, and the work moves forward in parallel."</div>
+</div>
+<div class="prod" id="prod-partner-workspaces">
+<div class="name edit-unit" contenteditable="false">Partner Workspaces</div>
+<div class="pitch edit-unit" contenteditable="false">"Secure collaboration with third parties on shared APIs, with precise permissions for what they see and what they can change. A payments processing company shares only the relevant collection with an external partner, without exposing its internal workspace."</div>
+</div>
+<div class="prod" id="prod-asa">
+<div class="name edit-unit" contenteditable="false">Advanced Security Administration — ASA</div>
+<div class="pitch edit-unit" contenteditable="false">"This is the Add-on I bring to the table when we’re talking about security at Enterprise scale, and it’s a product that exists and is active today. Broadly, it gives the security team more precise control over who can log in, from where, and how their secrets are kept — including automatic routing of logins by domain (Domain Capture), a dashboard and alerts for secret exposure attempts (Secret Scanner), integration with external vaults they already work with — like Azure Key Vault, HashiCorp, AWS Secrets Manager, 1Password — and encryption with a key they themselves control (BYOK). An organization with a regulatory requirement to encrypt its data with a key it fully controls — BYOK enables that without giving Postman access to the encryption key."</div>
+</div>
+<div class="prod" id="prod-fabric-inline">
+<div class="name edit-unit" contenteditable="false">Fabric — AI Control Layer (expanded in side panel)</div>
+<div class="pitch edit-unit" contenteditable="false">"Fabric is our central control layer for the AI world in the organization. As more teams work with different models, build AI Agents, and connect to MCP servers and internal APIs — each team starts managing its own connections, permissions, and Credentials. Fabric centralizes all of that traffic through a single control point: where AI requests are sent, which models and APIs they can access, how secrets are kept, how much it costs, and what actually happened — all under unified Governance."</div>
+</div>
+<div class="prod" id="prod-passport-inline">
+<div class="name edit-unit" contenteditable="false">Postman Passport — Governance for API Access (expanded in side panel)</div>
+<div class="pitch edit-unit" contenteditable="false">"Passport is a central Governance layer for discovering, requesting access to, and securely consuming APIs across the organization. Instead of developers and AI Agents getting the real API Key and scattering it across files, scripts, and CI/CD — they get a Passport Reference. The real Credential stays in the customer’s existing Vault, and is only resolved at the actual moment of the API call. The organization gets full Visibility into who requested access, who approved it, and how the API is actually used — without exposing Secrets at any stage."</div>
+</div>
+</section>
+<!-- PANELS: these no longer sit in the scrolling flow. They open as
+     slide-in side panels, triggered from the table of contents. -->
+<div class="side-panel" id="panel-objections">
+<div class="panel-header">
+<span>Positioning &amp; Objections — How I Respond</span>
+<button class="panel-close" data-close="panel-objections">✕</button>
+</div>
+<div class="panel-body">
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"This sounds like Waterfall — we work Agile / CD."</div>
+<div class="a edit-unit" contenteditable="false">"These stages aren’t Waterfall gates — they’re quality activities that happen all the time. In a CD organization: every PR is ‘design,’ every merge is a ‘gate,’ every deploy to staging is ‘verification.’ The question isn’t whether these stages exist for you — the question is whether they’re connected, or fragmented."</div>
+</div>
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"We already have QE and tools for that."</div>
+<div class="a edit-unit" contenteditable="false">"So I ask: do your tools share artifacts between stages, or does each tool keep its own format? And can you pull an audit trail automatically, or is it a manual review every quarter?"</div>
+</div>
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"Our AI already writes the tests."</div>
+<div class="a edit-unit" contenteditable="false">"If the agent that wrote the code is also the one that wrote the test, there’s a built-in conflict of interest — the test will reflect the assumptions of the implementation, not the intent of the spec. The question isn’t whether AI can generate tests — the question is whether the tests are independent, spec-based, and under Governance."</div>
+</div>
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">Data privacy (relevant for conversations with financial institutions)</div>
+<div class="a edit-unit" contenteditable="false">"Postman never has access to the customer’s real data — it always stays in your own cloud, AWS or Azure, and never passes through us. On the Enterprise plan, AI data is also not shared with Postman for model training purposes; on lower-tier plans — it is. We also have a Trust Portal (requires an NDA), with SOC 2, SOC 3, and ISO certifications."</div>
+</div>
+</div>
+</div>
+<div class="side-panel" id="panel-fabric">
+<div class="panel-header">
+<span>Fabric</span>
+<button class="panel-close" data-close="panel-fabric">✕</button>
+</div>
+<div class="panel-body">
+<p class="lead edit-unit" contenteditable="false">Fabric is our central control layer for the AI world in the organization.</p>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">How I explain it</b>
+      "As more teams start using different models — OpenAI, Claude, Gemini — to build AI Agents, and connect to MCP servers and internal APIs, each team starts managing its own connections, permissions, and Credentials. Fabric centralizes all of that traffic through a single control point — so the organization knows where AI requests are being sent, which models and APIs they can access, how secrets are kept, how much it costs, and what actually happened."
+    </div>
+<div class="group-title edit-unit" contenteditable="false">What Fabric Enables for the Organization</div>
+<ul class="panel-list">
+<li><b>Central Control Point</b> — manage the traffic between models, Agents, MCP servers, and internal APIs from one place.</li>
+<li><b>Routing and Reliability</b> — route requests between models, perform automatic Fallback when a model goes down, and pick the right model for each request.</li>
+<li><b>Security and Credential Management</b> — the Agent doesn’t need to see or hold the keys itself.</li>
+<li><b>Agent Governance</b> — determine precisely which APIs, Tools, or MCP Servers each Agent is authorized to access.</li>
+<li><b>Cost Control</b> — see who’s consuming how many Tokens and at what cost, and set budgets.</li>
+<li><b>Full Audit</b> — know who activated which Agent, on which model, which API it accessed, and which Policy was triggered.</li>
+</ul>
+<div class="cross-box edit-unit" contenteditable="false">
+<b>Example I give:</b> You have a team working with OpenAI, another team with Claude, and an Agent connecting to an MCP Server — and they all need access to internal systems. Today each of them holds its own Keys, permissions, and logs, and there’s no central layer that sees all the traffic. With Fabric, all requests pass through a single control layer: if an Agent requests GPT-5, Fabric can approve, block, route to a different model, switch to Claude if there’s an outage, or split traffic between several models — all in one place.
+    </div>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">Summary line</b>
+      "Fabric is the central control layer that connects the organization's AI, Agents, MCP servers, and APIs — and gives you control over traffic, security, permissions, costs, and Audit, instead of each of them being managed separately."
+    </div>
+</div>
+</div>
+<div class="side-panel" id="panel-passport">
+<div class="panel-header">
+<span>Postman Passport</span>
+<button class="panel-close" data-close="panel-passport">✕</button>
+</div>
+<div class="panel-body">
+<p class="lead edit-unit" contenteditable="false">Passport is a central Governance layer for discovering, requesting access to, and securely consuming APIs across the organization.</p>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">The challenge I describe</b>
+      "As there are more APIs and more people, applications, and AI Agents that need to use them, it becomes hard to know who’s using what, who has access, and where the API Keys and Secrets end up scattered. A developer looks for an API on Slack or in documentation, requests access from someone, and the real Key ends up in .env files, scripts, CI/CD, and other places. And as more AI Agents start accessing APIs, this challenge only grows."
+    </div>
+<div class="cross-box edit-unit" contenteditable="false">
+<b>Example I give:</b> A new team is building an application that needs an internal customer API. The developer needs to figure out who owns it, who to ask, get a Key, and plug it into the system. Multiply that by dozens of APIs and hundreds of developers — and at some point the organization no longer knows who holds which Key, and which API they have access to.
+    </div>
+<div class="group-title edit-unit" contenteditable="false">How Passport Solves This</div>
+<ul class="panel-list">
+<li><b>Central Discovery</b> — developers and AI Agents find approved APIs in one place.</li>
+<li><b>Controlled Access Request</b> — instead of getting the real Key, they get a Passport Reference.</li>
+<li><b>Secretless Consumption</b> — the real Credential stays in the customer’s existing Vault, and is only resolved at the actual moment of the API call — without the user or the Agent ever seeing or copying it.</li>
+<li><b>Full Visibility</b> — who requested access, who approved it, and how the API is actually used.</li>
+<li><b>Works With Existing Tools</b> — complements HashiCorp, AWS Secrets Manager, 1Password, etc., doesn’t replace them.</li>
+</ul>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">Summary line</b>
+      "Passport gives the organization a central way to discover APIs, manage access to them, and enable secure use of them — without exposing the real Credentials."
+    </div>
+<div class="group-title edit-unit" contenteditable="false">When Passport Is Really Relevant — Customer Signals</div>
+<table class="panel-table">
+<tr><th>What the customer says</th><th>Fit</th><th>Why it’s interesting</th></tr>
+<tr><td>Developers don’t know which internal or partner APIs they’re supposed to access</td><td>🟢 Strong</td><td>API Network gives a central, controlled place to discover approved APIs.</td></tr>
+<tr><td>API access happens via Slack, Tickets, email, or tribal knowledge</td><td>🟢🟢 Very strong</td><td>Passport formalizes access requests, approval, Scope, Audit, and access revocation.</td></tr>
+<tr><td>We’re worried API Keys will show up in Variables, Repos, Logs, or local files</td><td>🟢🟢 Very strong</td><td>Secretless Consumption reduces the need to distribute the API Keys themselves.</td></tr>
+<tr><td>We use HashiCorp / AWS Secrets Manager / 1Password / GitGuardian, etc.</td><td>🟢 Strong</td><td>Passport complements existing tools and adds an Access Governance layer.</td></tr>
+<tr><td>AI Agents or automated processes need access to APIs but we don’t know how to manage it</td><td>🟢🟢 Very strong</td><td>This is one of Passport’s core and fastest-growing use cases.</td></tr>
+</table>
+</div>
+</div>
+<div class="side-panel" id="panel-asa">
+<div class="panel-header">
+<span>Advanced Security Administration — ASA</span>
+<button class="panel-close" data-close="panel-asa">✕</button>
+</div>
+<div class="panel-body">
+<p class="lead edit-unit" contenteditable="false">ASA is the Add-on I bring to the table when we talk about security at Enterprise scale — a product that exists and is active today, sold as a separate charge on top of Enterprise.</p>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">How I explain it</b>
+      "Broadly, it gives the security team more precise control over who can log in, from where, and how their secrets are kept. Postman’s default is already secure, but ASA adds an additional control layer specific to Enterprise and to regulatory requirements like SOC 2, ISO, or PCI."
+    </div>
+<div class="group-title edit-unit" contenteditable="false">What’s Included in ASA</div>
+<ul class="panel-list">
+<li><b>Domain Capture</b> — automatic routing of logins by domain, so every employee logs into the correct organizational account without confusion between personal and company accounts.</li>
+<li><b>Secret Scanner — Dashboard &amp; Alerts</b> — not just a single secrets scanner, but an organization-wide picture: how many exposure attempts happened, where, and who was involved.</li>
+<li><b>Integration With External Vaults</b> — Azure Key Vault, HashiCorp, AWS Secrets Manager, 1Password — so Postman works with the infrastructure the customer already uses, rather than replacing it.</li>
+<li><b>BYOK — Encryption With the Customer’s Own Key</b> — the customer fully controls the encryption key; Postman never gets access to it at any stage.</li>
+</ul>
+<div class="cross-box edit-unit" contenteditable="false">
+<b>Example I give:</b> A financial organization subject to a regulation that requires it to encrypt all its sensitive data with a key it controls itself, and doesn’t rely on any external vendor holding the key. With BYOK, the organization keeps the encryption key in its own vault — and Postman simply cannot access the data without that key, even if it wanted to.
+    </div>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">Summary line</b>
+      "ASA doesn't replace Postman's baseline security — it adds a layer of control, visibility, and control at the Enterprise level, for those who need to meet strict regulatory requirements."
+    </div>
+</div>
+</div>
+
+<div class="side-panel" id="panel-database">
+  <div class="panel-header">
+    <span>DATABASE — Comparison, Pricing &amp; Discovery</span>
+    <button class="panel-close" data-close="panel-database">✕</button>
+  </div>
+  <div class="panel-body">
+    <p class="lead edit-unit" contenteditable="false">An internal knowledge base — not a script to read aloud, but background material the bot can pull from when you ask it a question about competitors, pricing, or when to bring up Fabric.</p>
+
+    <div class="group-title edit-unit" contenteditable="false">Competitor Comparison — The Pitch for Each Competitor</div>
+
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">cURL — Command-Line Tool (CLI)</div>
+      <div class="pitch edit-unit" contenteditable="false">"cURL is perfect for a single developer sending one request. The moment that request needs to be shared, tested, or monitored in production — it has nowhere to go. Postman is where it becomes an asset for the team."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">Bruno — Local, Git-native API Client</div>
+      <div class="pitch edit-unit" contenteditable="false">"Bruno is a clean, local, Git-native tool, good if you work alone. Postman is where that work becomes a shared workspace your whole team can build on."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">Hoppscotch — Free Browser-Based API Client</div>
+      <div class="pitch edit-unit" contenteditable="false">"Hoppscotch is free, and that’s a real advantage at the client stage. But contract testing, monitoring, Governance, and AI-assisted creation don’t exist on any tier. Postman gives you the full lifecycle."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">Kong Insomnia — API Client Bundled With Kong</div>
+      <div class="pitch edit-unit" contenteditable="false">"Insomnia feels free because it comes bundled with your Kong contract, but a client that comes bundled isn’t a platform. Postman sits above the gateway, for every team — not just the ones touching Kong."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">SmartBear Swagger — Design &amp; Lifecycle Suite</div>
+      <div class="pitch edit-unit" contenteditable="false">"Swagger gives you a single login across three products that don’t really share data. Postman is one real platform, where a spec change flows directly into tests, mocks, and documentation."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">Stoplight — API Design Tool (Discontinued)</div>
+      <div class="pitch edit-unit" contenteditable="false">"Nobody, not even the company that owns it, is still investing in Stoplight. The question isn’t whether you’ll leave, but where you’ll land. Postman is the modern destination for the lifecycle."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">SoapUI (OSS) — Free SOAP/REST Testing</div>
+      <div class="pitch edit-unit" contenteditable="false">"SoapUI’s capabilities in SOAP and WSDL are genuinely some of the best in the field, and it’s free. What it can’t do is put your tests in a shared workspace or monitor your APIs in production. That’s where Postman comes into the picture."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">ReadyAPI — Paid Enterprise Testing</div>
+      <div class="pitch edit-unit" contenteditable="false">"ReadyAPI is a serious Enterprise testing product, not the free SoapUI. Postman runs the same tests, and then connects them to monitoring and a live API catalog, with a real migration path."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">APIdog — Cheap All-in-One Solution</div>
+      <div class="pitch edit-unit" contenteditable="false">"At $25 per user, APIdog looks like a bargain next to our price. But the moment you ask about Governance, API catalog, or Enterprise-level trust — that gap stops being the conversation."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">MuleSoft Anypoint — Enterprise Integration Platform</div>
+      <div class="pitch edit-unit" contenteditable="false">"MuleSoft excels at connecting Enterprise systems, and we’re not replacing that. Postman is the platform for every developer and partner touching APIs that MuleSoft’s runtime doesn’t reach."</div>
+    </div>
+
+    <div class="group-title edit-unit" contenteditable="false">Lifecycle Coverage Matrix</div>
+    <table class="panel-table">
+      <tr><th>Capability</th><th>Postman</th><th>API Clients</th><th>Design Tools</th><th>Test Suites</th><th>MuleSoft</th></tr>
+      <tr><td>Spec design &amp; planning</td><td>✓ Full</td><td>— None</td><td>✓ Full</td><td>~ Partial</td><td>✓ Full</td></tr>
+      <tr><td>Functional testing</td><td>✓ Full</td><td>~ Partial</td><td>~ Partial</td><td>✓ Full</td><td>~ Partial</td></tr>
+      <tr><td>Load &amp; security testing</td><td>✓ Full</td><td>— None</td><td>~ Partial</td><td>✓ Full</td><td>~ Partial</td></tr>
+      <tr><td>Mock servers</td><td>✓ Full</td><td>~ Partial</td><td>✓ Full</td><td>~ Partial</td><td>~ Partial</td></tr>
+      <tr><td>Continuous production monitoring</td><td>✓ Full</td><td>— None</td><td>— None</td><td>— None</td><td>✓ Full</td></tr>
+      <tr><td>Governance &amp; API catalog</td><td>✓ Full</td><td>— None</td><td>~ Partial</td><td>— None</td><td>~ Partial</td></tr>
+      <tr><td>AI-assisted creation</td><td>✓ Full</td><td>~ Partial</td><td>~ Partial</td><td>~ Partial</td><td>~ Partial</td></tr>
+      <tr><td>Shared workspace</td><td>✓ Full</td><td>~ Partial</td><td>✓ Full</td><td>~ Partial</td><td>✓ Full</td></tr>
+      <tr><td>Enterprise security (SSO/SCIM/RBAC)</td><td>✓ Full</td><td>~ Partial</td><td>✓ Full</td><td>~ Partial</td><td>✓ Full</td></tr>
+    </table>
+
+    <div class="group-title edit-unit" contenteditable="false">Pricing &amp; Plans (2026)</div>
+    <div class="cross-box edit-unit" contenteditable="false">
+      The plan structure moved from Free/Basic/Professional/Enterprise to <b>Free/Solo/Team/Enterprise</b> on March 1, 2026. Free, Solo, and Team are <b>self-serve</b> plans; Enterprise is <b>sales-assisted</b>. Professional is a legacy plan — there’s no forced migration, existing customers can stay on it and keep growing.
+    </div>
+    <ul class="panel-list">
+      <li><b>ASA</b> (Advanced Security Administration) — the first Add-on I position in the conversation.</li>
+      <li><b>Fabric AI Gateway</b> — the second Add-on I position, after ASA.</li>
+      <li><b>Passport</b> — Governance for API access, without exposing Credentials.</li>
+      <li><b>Premium Support</b> — an enhanced support tier on top of Enterprise.</li>
+    </ul>
+
+    <div class="group-title edit-unit" contenteditable="false">Discovery Questions for Fabric</div>
+    <div class="say edit-unit" contenteditable="false">
+      <b class="tag">Question 1</b>
+      "How many teams are building or running AI applications or Agents today, and how is that managed?" — 🟢 "Several teams," "everyone builds it separately" = fragmentation, strong signal. 🔴 "One small project" = probably too early.
+    </div>
+    <div class="say edit-unit" contenteditable="false">
+      <b class="tag">Question 2</b>
+      "How do your Agents currently access LLMs, MCP servers, and internal APIs?" — 🟢 "Each team manages it themselves," "we have different API Keys everywhere," "we built our own Proxy" = very strong signal. 🔴 "One simple direct connection" = weak signal.
+    </div>
+    <div class="say edit-unit" contenteditable="false">
+      <b class="tag">Question 3</b>
+      "As AI usage grows, are there concerns around security, Agent access, Credentials, Governance, or costs?" — 🟢 "Security is asking how Agent access is controlled," "we don’t want Agents holding Credentials," "we need an Audit Trail" = very strong signal. 🔴 "Not worried," "the spend is negligible" = probably not a priority right now.
+    </div>
+
+    <table class="panel-table">
+      <tr><th>Topic</th><th>Fits Fabric</th><th>Not a Fit Right Now</th></tr>
+      <tr><td>MCP</td><td>Using or planning several MCP Servers</td><td>No use/plans for MCP</td></tr>
+      <tr><td>Internal APIs</td><td>Agents need secure access to internal APIs</td><td>Agents don’t touch organizational systems</td></tr>
+      <tr><td>Security</td><td>Strong Governance requirements</td><td>Minimal security requirements</td></tr>
+      <tr><td>Credentials</td><td>Many API Keys and sensitive data</td><td>One simple API Key</td></tr>
+      <tr><td>AI costs</td><td>Needs Visibility and spend control</td><td>AI costs aren’t significant</td></tr>
+      <tr><td>Architecture</td><td>AI environment distributed across teams/systems</td><td>One simple direct connection</td></tr>
+      <tr><td>API Gateway angle</td><td>Looking for agentic Governance alongside existing infrastructure</td><td>Just want to replace a traditional API Gateway</td></tr>
+    </table>
+    <div class="cross-box edit-unit" contenteditable="false">
+      <b>Positioning point:</b> Don’t sell Fabric as a replacement for Kong/Apigee — it’s an AI-tailored Governance layer that sits alongside the existing API infrastructure.
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="side-panel" id="answer-panel">
+<div class="panel-header">
+<span>Answer</span>
+<button class="panel-close" data-close="answer-panel">✕</button>
+</div>
+<div class="panel-body answer-body">
+<div class="answer-toolbar">
+<button id="ans-bold-btn" title="Bold (select text and click)">B</button>
+<button id="ans-italic-btn" title="Italic (select text and click)">I</button>
+<button id="ans-dec-font-btn" title="Decrease text size (select text and click)">A-</button>
+<button id="ans-inc-font-btn" title="Increase text size (select text and click)">A+</button>
+<button class="ans-swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="Black"></button>
+<button class="ans-swatch" data-color="#FF6C37" style="background:#FF6C37" title="Orange"></button>
+<button class="ans-swatch" data-color="#D64545" style="background:#D64545" title="Red"></button>
+<button class="ans-swatch" data-color="#2E7D5B" style="background:#2E7D5B" title="Green"></button>
+<button class="ans-swatch" data-color="#2F6FED" style="background:#2F6FED" title="Blue"></button>
+<button class="ans-swatch" data-color="#5B5F66" style="background:#5B5F66" title="Grey"></button>
+<button id="ans-save-btn" class="ans-save-btn" title="Save your edits so this exact question shows this answer next time">Save edit</button>
+</div>
+<div class="answer-question" id="answer-question"></div>
+<div class="answer-content" contenteditable="true" id="answer-content"></div>
+</div>
+</div>
+</main>
+<aside id="chat-panel">
+<div class="chat-header">
+<span class="chat-header-icon">🤖</span>
+<span class="chat-header-title">Ask About the Material</span>
+</div>
+<div class="chat-quick">
+<button class="chat-quick-btn" data-prompt="What’s the difference between Fabric and Passport?">What’s the difference between Fabric and Passport?</button>
+<button class="chat-quick-btn" data-prompt="The customer objects to the price, how do I respond?">The customer objects to the price, how do I respond?</button>
+<button class="chat-quick-btn" data-prompt="What is ASA and why is it an Add-on?">What is ASA and why is it an Add-on?</button>
+<button class="chat-quick-btn" data-prompt="The customer uses Kong, how do I respond?">The customer uses Kong, how do I respond?</button>
+</div>
+<div id="chat-log">
+<div class="chat-placeholder">Ask any question about what’s written in the document — the answer will be based only on the content on the page, including the side panels.</div>
+</div>
+<div id="chat-input-row">
+<textarea id="chat-question" placeholder="Type a question..." rows="1"></textarea>
+<button id="chat-send">Send</button>
+</div>
+<div class="chat-disclaimer">Answers are based only on the document’s content. Worth double-checking answers before relying on them in a live call.</div>
+</aside>
+</div>
+</div>
+<script>
+(function(){
+  const root = document.getElementById('editable-root');
+  const undoBtn = document.getElementById('undo-btn');
+  const toggleBtn = document.getElementById('toggle-btn');
+  const downloadBtn = document.getElementById('download-btn');
+  const statusEl = document.getElementById('save-status');
+
+  // --- Turn only specific text-bearing elements into editable "units" ---
+  // Card / grid / row containers (.stage, .offer, .prod, .obj, .stage-row,
+  // .offer-grid, ul) are deliberately left OUT of this list. That's the fix
+  // for "deleting a line makes everything jump up": since those structural
+  // wrappers are never contenteditable themselves, the browser can't merge
+  // or remove them when you backspace inside the text — only the text
+  // inside the specific line changes, the card/grid box stays put.
+  const EDITABLE_SELECTORS = [
+    'header.top h1', 'header.top p',
+    'h2', '.lead',
+    '.stage .t', '.stage .who', '.stage .d',
+    '.say', '.ai-box .h', '.ai-box p',
+    '.offer .t', '.offer p',
+    '.cross-box', '.group-title',
+    '.prod .name', '.prod .pitch',
+    '.obj .q', '.obj .a',
+    '.final > p', '.final li',
+    '.pitch-open',
+    '.panel-list li'
+  ];
+  const units = new Set();
+  EDITABLE_SELECTORS.forEach(sel => root.querySelectorAll(sel).forEach(el => units.add(el)));
+  units.forEach(el => { el.classList.add('edit-unit'); el.setAttribute('contenteditable', 'true'); });
+
+  let editingLocked = false;
+  let undoStack = [];
+  const MAX_UNDO = 40;
+  let burstSnapshot = null;      // state of the document BEFORE the current typing burst
+  let debounceTimer = null;
+  const DEBOUNCE_MS = 700;       // pause in typing that counts as "one step" ending
+  let savedRange = null;         // selection kept alive across the color picker's native dialog
+
+  function setStatus(text){
+    statusEl.textContent = text;
+    clearTimeout(statusEl._t);
+    statusEl._t = setTimeout(()=>{ statusEl.textContent = ''; }, 2500);
+  }
+
+  function updateUndoButton(){
+    undoBtn.disabled = undoStack.length === 0;
+  }
+
+  function pushUndo(snapshot){
+    undoStack.push(snapshot);
+    if(undoStack.length > MAX_UNDO) undoStack.shift();
+    updateUndoButton();
+  }
+
+  // Typing is grouped into "steps": a step is a burst of typing with no
+  // pause longer than DEBOUNCE_MS. Only when the burst ends do we push ONE
+  // undo entry for that whole burst — so Undo reverts one step, not
+  // everything typed since you started editing.
+  function commitBurst(){
+    clearTimeout(debounceTimer);
+    if(burstSnapshot === null) return;
+    const current = root.innerHTML;
+    if(current !== burstSnapshot){
+      pushUndo(burstSnapshot);
+    }
+    burstSnapshot = null;
+  }
+
+  root.addEventListener('beforeinput', ()=>{
+    if(editingLocked) return;
+    if(burstSnapshot === null){
+      burstSnapshot = root.innerHTML;
+    }
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(commitBurst, DEBOUNCE_MS);
+  });
+
+  root.addEventListener('focusout', commitBurst);
+
+  undoBtn.addEventListener('click', ()=>{
+    commitBurst(); // flush any typing that hasn't been committed as a step yet
+    if(undoStack.length === 0) return;
+    const prev = undoStack.pop();
+    root.innerHTML = prev;
+    // innerHTML replacement wipes the contenteditable attributes we added —
+    // put them back on the restored content.
+    units.clear();
+    EDITABLE_SELECTORS.forEach(sel => root.querySelectorAll(sel).forEach(el => units.add(el)));
+    units.forEach(el => { el.classList.add('edit-unit'); el.setAttribute('contenteditable', editingLocked ? 'false' : 'true'); });
+    updateUndoButton();
+    setStatus('Last change undone');
+  });
+
+  toggleBtn.addEventListener('click', ()=>{
+    commitBurst();
+    editingLocked = !editingLocked;
+    units.forEach(el => el.setAttribute('contenteditable', editingLocked ? 'false' : 'true'));
+    toggleBtn.textContent = editingLocked ? '✏️ Editing active' : '🔒 Lock editing';
+  });
+
+  downloadBtn.addEventListener('click', ()=>{
+    commitBurst();
+    const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    const blob = new Blob([htmlContent], {type:'text/html;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'postman-explainer-edited.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setStatus('File downloaded ✓');
+  });
+
+  // ---- formatting toolbar: each click is its own single undo step ----
+
+  function runCommand(cmd, value){
+    if(editingLocked) return;
+    commitBurst();
+    const before = root.innerHTML;
+    document.execCommand(cmd, false, value || null);
+    const after = root.innerHTML;
+    if(after !== before) pushUndo(before);
+  }
+
+  function wrapSelection(styleProp, valueOrDelta, isSizeDelta){
+    if(editingLocked) return;
+    const sel = window.getSelection();
+    if(!sel || sel.rangeCount === 0 || sel.isCollapsed || !root.contains(sel.getRangeAt(0).commonAncestorContainer)){
+      setStatus('Select text first');
+      return;
+      return;
+    }
+    commitBurst();
+    const before = root.innerHTML;
+    const range = sel.getRangeAt(0);
+
+    let value = valueOrDelta;
+    if(isSizeDelta){
+      const refNode = range.startContainer.nodeType === 3 ? range.startContainer.parentElement : range.startContainer;
+      const currentSize = parseFloat(window.getComputedStyle(refNode).fontSize) || 15;
+      value = Math.max(10, Math.min(40, currentSize + valueOrDelta)) + 'px';
+    }
+
+    const span = document.createElement('span');
+    span.style[styleProp] = value;
+    span.appendChild(range.extractContents());
+    range.insertNode(span);
+
+    // Fix: a nested tag like <b> can have its OWN color set by a CSS class
+    // rule (e.g. ".cross-box b{color:orange}"). That rule targets the <b>
+    // element directly, so it wins over the wrapping span's colour no matter
+    // what we set on the span — inheritance only applies when nothing
+    // targets the element itself. So when recoloring, also stamp the new
+    // color directly onto every element inside the selection.
+    if(styleProp === 'color'){
+      span.querySelectorAll('*').forEach(node => { node.style.color = value; });
+    }
+
+    sel.removeAllRanges();
+    const newRange = document.createRange();
+    newRange.selectNodeContents(span);
+    sel.addRange(newRange);
+
+    const after = root.innerHTML;
+    if(after !== before) pushUndo(before);
+  }
+
+  document.querySelectorAll('.swatch').forEach(btn=>{
+    btn.addEventListener('mousedown', e=>e.preventDefault());
+    btn.addEventListener('click', ()=> wrapSelection('color', btn.dataset.color, false));
+  });
+
+  document.getElementById('bold-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('bold-btn').addEventListener('click', ()=> runCommand('bold'));
+
+  document.getElementById('italic-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('italic-btn').addEventListener('click', ()=> runCommand('italic'));
+
+  document.getElementById('inc-font-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('inc-font-btn').addEventListener('click', ()=> wrapSelection('fontSize', 2, true));
+
+  document.getElementById('dec-font-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('dec-font-btn').addEventListener('click', ()=> wrapSelection('fontSize', -2, true));
+
+  const colorInput = document.getElementById('color-input');
+  colorInput.addEventListener('mousedown', ()=>{
+    const sel = window.getSelection();
+    savedRange = (sel && sel.rangeCount > 0 && !sel.isCollapsed && root.contains(sel.getRangeAt(0).commonAncestorContainer))
+      ? sel.getRangeAt(0).cloneRange()
+      : null;
+  });
+  colorInput.addEventListener('input', (e)=>{
+    if(!savedRange){ setStatus('Select text first'); return; }
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedRange);
+    wrapSelection('color', e.target.value, false);
+  });
+
+  updateUndoButton();
+})();
+
+// --- left nav: scroll-to for sections, open for side panels ---
+(function(){
+  const backdrop = document.getElementById('panel-backdrop');
+  const centerContent = document.getElementById('center-content');
+
+  function openPanel(id){
+    const panel = document.getElementById(id);
+    if(!panel) return;
+    document.querySelectorAll('.side-panel.open').forEach(p => p.classList.remove('open'));
+    panel.classList.add('open');
+    backdrop.classList.add('open');
+  }
+  function closeAllPanels(){
+    document.querySelectorAll('.side-panel.open').forEach(p => p.classList.remove('open'));
+    backdrop.classList.remove('open');
+  }
+  // exposed so the chat script (a separate IIFE below) can open the
+  // floating answer window without needing its own backdrop/open-panel logic
+  window.openSidePanel = openPanel;
+
+  document.querySelectorAll('[data-open-panel]').forEach(btn=>{
+    btn.addEventListener('click', ()=> openPanel(btn.dataset.openPanel));
+  });
+  document.querySelectorAll('.panel-close').forEach(btn=>{
+    btn.addEventListener('click', closeAllPanels);
+  });
+  backdrop.addEventListener('click', closeAllPanels);
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') closeAllPanels();
+  });
+
+  // Make each panel draggable by its header. Clicking the ✕ inside the
+  // header must NOT start a drag — checked via closest() below.
+  document.querySelectorAll('.side-panel').forEach(panel=>{
+    const header = panel.querySelector('.panel-header');
+    if(!header) return;
+    const frame = document.getElementById('app-frame');
+
+    header.addEventListener('mousedown', (e)=>{
+      if(e.target.closest('.panel-close')) return;
+      e.preventDefault();
+
+      const panelRect = panel.getBoundingClientRect();
+      const frameRect = frame.getBoundingClientRect();
+      // Lock in the panel's current on-screen spot as explicit left/top
+      // (in case it's still sitting at its default CSS position), then
+      // drag from there.
+      const startLeft = panelRect.left - frameRect.left;
+      const startTop = panelRect.top - frameRect.top;
+      panel.style.left = startLeft + 'px';
+      panel.style.top = startTop + 'px';
+
+      const startX = e.clientX;
+      const startY = e.clientY;
+
+      function onMove(ev){
+        panel.style.left = (startLeft + (ev.clientX - startX)) + 'px';
+        panel.style.top = (startTop + (ev.clientY - startY)) + 'px';
+      }
+      function onUp(){
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+
+  // Scroll within the center column itself (not the whole window) — this is
+  // what actually fixes "clicking a topic takes me to an external page":
+  // a plain href="#id" anchor was navigating the top-level document, which
+  // in this sandboxed viewer got treated as leaving the page. scrollIntoView
+  // finds the nearest scrollable ancestor (#center-content) and scrolls that
+  // instead, with no navigation involved at all.
+
+  // Brief highlight so you can spot exactly where you landed mid-call,
+  // without it staying loud/distracting.
+  function flashTarget(el){
+    if(!el) return;
+    el.style.transition = 'background-color .9s ease, box-shadow .9s ease';
+    el.style.backgroundColor = '#FFF1E6';
+    el.style.boxShadow = '0 0 0 2px rgba(255,108,55,0.35)';
+    setTimeout(()=>{
+      el.style.backgroundColor = '';
+      el.style.boxShadow = '';
+    }, 1100);
+  }
+
+  const scrollButtons = document.querySelectorAll('.nav-item[data-scroll]');
+  scrollButtons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const target = document.getElementById(btn.dataset.scroll);
+      if(target){
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        flashTarget(target);
+      }
+    });
+  });
+
+  // Product submenu: the chevron only toggles the list open/closed and does
+  // NOT scroll — the "Core Products" button next to it keeps scrolling to the
+  // section exactly as before. Each product inside the list scrolls to that
+  // specific product's own card.
+  document.querySelectorAll('.chevron-btn[data-toggle]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const submenu = document.getElementById(btn.dataset.toggle);
+      if(!submenu) return;
+      submenu.classList.toggle('open');
+      btn.classList.toggle('open');
+    });
+  });
+  document.querySelectorAll('.nav-subitem[data-scroll]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const target = document.getElementById(btn.dataset.scroll);
+      if(target){
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        flashTarget(target);
+      }
+    });
+  });
+
+  // Highlight the nav item for whichever section is currently in view.
+  const sectionIds = Array.from(scrollButtons).map(b => b.dataset.scroll);
+  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+  function updateActive(){
+    let currentId = sectionIds[0];
+    for(const sec of sections){
+      if(sec.getBoundingClientRect().top - centerContent.getBoundingClientRect().top < 80){
+        currentId = sec.id;
+      }
+    }
+    scrollButtons.forEach(btn=>{
+      btn.classList.toggle('active', btn.dataset.scroll === currentId);
+    });
+  }
+  centerContent.addEventListener('scroll', updateActive);
+  updateActive();
+})();
+
+// --- docked chat panel: multi-turn, answers only from the document's own current text ---
+(function(){
+  // Works as-is inside Claude.ai (calls Anthropic directly — that only
+  // works in this sandbox). Once you host this file elsewhere (GitHub
+  // Pages, etc.), deploy anthropic-proxy-worker.js to Cloudflare Workers
+  // and replace the line below with your Worker's URL, e.g.
+  // 'https://postman-bot-relay.your-subdomain.workers.dev' — nothing
+  // else in this file needs to change.
+  const API_ENDPOINT = 'https://api.anthropic.com/v1/messages';
+
+  const logEl = document.getElementById('chat-log');
+  const questionEl = document.getElementById('chat-question');
+  const sendBtn = document.getElementById('chat-send');
+  const root = document.getElementById('editable-root');
+  let placeholderRemoved = false;
+
+  // The actual fix for "give me another follow-up question" losing the
+  // topic: we now keep the real message history and resend it every call.
+  // The Anthropic API is stateless per-request — if you only send the new
+  // question, the model has zero memory of what "another one" refers to.
+  // The document text + instructions are embedded once, in the FIRST user
+  // turn only; every later turn is just the plain question, relying on the
+  // history already in the array for context.
+  let conversationHistory = [];
+  const MAX_HISTORY_MESSAGES = 16; // keep the first (doc-bearing) turn + recent ones
+
+  // ---- floating answer window ----
+  const answerPanel = document.getElementById('answer-panel');
+  const answerQuestionEl = document.getElementById('answer-question');
+  const answerContentEl = document.getElementById('answer-content');
+  const SAVED_ANSWERS_KEY = 'postman-explainer-saved-answers';
+  let currentAnswerKey = null;
+
+  function normalizeQuestion(q){
+    return q.trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+  function loadSavedAnswers(){
+    try{ return JSON.parse(localStorage.getItem(SAVED_ANSWERS_KEY)) || {}; }
+    catch(e){ return {}; }
+  }
+  function getSavedAnswer(question){
+    return loadSavedAnswers()[normalizeQuestion(question)] || null;
+  }
+  function saveCurrentAnswer(){
+    if(!currentAnswerKey) return;
+    const answers = loadSavedAnswers();
+    answers[currentAnswerKey] = answerContentEl.innerHTML;
+    localStorage.setItem(SAVED_ANSWERS_KEY, JSON.stringify(answers));
+    const saveBtn = document.getElementById('ans-save-btn');
+    const original = saveBtn.textContent;
+    saveBtn.textContent = 'Saved ✓';
+    setTimeout(()=>{ saveBtn.textContent = original; }, 1500);
+  }
+  document.getElementById('ans-save-btn').addEventListener('click', saveCurrentAnswer);
+
+  function openAnswerPanel(question){
+    currentAnswerKey = normalizeQuestion(question);
+    answerQuestionEl.textContent = question;
+    if(window.openSidePanel) window.openSidePanel('answer-panel');
+    else answerPanel.classList.add('open');
+  }
+
+  function addMessage(role, text){
+    if(!placeholderRemoved){
+      logEl.innerHTML = '';
+      placeholderRemoved = true;
+    }
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + role;
+    div.textContent = text;
+    logEl.appendChild(div);
+    logEl.scrollTop = logEl.scrollHeight;
+    return div;
+  }
+
+  function trimHistory(){
+    if(conversationHistory.length <= MAX_HISTORY_MESSAGES) return;
+    // Keep message 0 (has the document + instructions) and the most recent
+    // messages; drop the oldest middle ones so the doc-context never falls out.
+    const keepTail = MAX_HISTORY_MESSAGES - 1;
+    conversationHistory = [conversationHistory[0], ...conversationHistory.slice(-keepTail)];
+  }
+
+  async function ask(question){
+    if(!question) return;
+    sendBtn.disabled = true;
+    addMessage('user', question);
+
+    openAnswerPanel(question);
+    answerContentEl.setAttribute('contenteditable', 'false');
+
+    // If this exact question was already asked and edited/saved before,
+    // show the saved version instead of calling the API again.
+    const saved = getSavedAnswer(question);
+    if(saved !== null){
+      answerContentEl.classList.remove('loading');
+      answerContentEl.innerHTML = saved;
+      answerContentEl.setAttribute('contenteditable', 'true');
+      addMessage('bot', answerContentEl.innerText);
+      conversationHistory.push({ role: 'user', content: question });
+      conversationHistory.push({ role: 'assistant', content: answerContentEl.innerText });
+      trimHistory();
+      sendBtn.disabled = false;
+      return;
+    }
+
+    answerContentEl.classList.add('loading');
+    answerContentEl.textContent = 'Searching the document…';
+    const botMsg = addMessage('bot loading', 'Searching the document…');
+
+    let userTurnContent;
+    if(conversationHistory.length === 0){
+      const documentText = root.innerText;
+      userTurnContent = 'Below is a Postman sales training document, in English. Answer the following questions based only on the information written in this document (including the content of the side panels — Positioning & Objections, Fabric, Passport, ASA, DATABASE). If the answer doesn\'t appear in the document, say so clearly and don\'t make up information. You are answering a salesperson who is in the middle of a live sales call with the customer on the line — give a short, direct answer, 2-3 sentences at most, in English, with no preamble.\n\nAlso: if the question fits a case where it would help to send the customer a clarifying or counter-question (Reverse Question) — add a separate line at the end that starts exactly with "🔄 Suggested follow-up question:" followed by one concrete question. If the situation doesn\'t fit that, don\'t add this line at all.\n\nThis will be an ongoing conversation with several questions in a row. If a follow-up question is general or briefly phrased (e.g. "give me another one", "what else?", "explain more"), treat it as a continuation of the topic we were just discussing — unless it\'s clearly phrased as switching to a different topic.\n\n<document>\n' + documentText + '\n</document>\n\nFirst question: ' + question;
+    } else {
+      userTurnContent = question;
+    }
+
+    conversationHistory.push({ role: 'user', content: userTurnContent });
+    trimHistory();
+
+    let accumulated = '';
+    let firstTokenReceived = false;
+
+    try{
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 300,
+          stream: true,
+          messages: conversationHistory
+        })
+      });
+
+      if(!response.ok || !response.body){
+        throw new Error('bad response: ' + response.status);
+      }
+
+      // Stream the answer in as it's generated — feels close to instant
+      // since text starts appearing right away instead of after the whole
+      // answer is ready.
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while(true){
+        const { value, done } = await reader.read();
+        if(done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for(const line of lines){
+          if(!line.startsWith('data:')) continue;
+          const jsonStr = line.slice(5).trim();
+          if(!jsonStr || jsonStr === '[DONE]') continue;
+          try{
+            const evt = JSON.parse(jsonStr);
+            if(evt.type === 'content_block_delta' && evt.delta && evt.delta.type === 'text_delta'){
+              if(!firstTokenReceived){
+                botMsg.textContent = '';
+                botMsg.classList.remove('loading');
+                answerContentEl.classList.remove('loading');
+                answerContentEl.textContent = '';
+                firstTokenReceived = true;
+              }
+              accumulated += evt.delta.text;
+              botMsg.textContent = accumulated;
+              answerContentEl.textContent = accumulated;
+              logEl.scrollTop = logEl.scrollHeight;
+            }
+          }catch(e){ /* partial/incomplete JSON line — ignore, next chunk completes it */ }
+        }
+      }
+
+      if(!accumulated){
+        botMsg.classList.remove('loading');
+        botMsg.textContent = 'No response received from the system.';
+        answerContentEl.classList.remove('loading');
+        answerContentEl.textContent = 'No response received from the system.';
+        conversationHistory.pop(); // failed turn — don't poison history with an empty reply
+      } else {
+        conversationHistory.push({ role: 'assistant', content: accumulated });
+        answerContentEl.setAttribute('contenteditable', 'true');
+      }
+    }catch(err){
+      botMsg.classList.remove('loading');
+      botMsg.classList.add('err');
+      botMsg.textContent = 'Something went wrong with the request. Try again.';
+      answerContentEl.classList.remove('loading');
+      answerContentEl.textContent = 'Something went wrong with the request. Try again.';
+      conversationHistory.pop(); // failed turn — remove the dangling user message too
+      console.error('ai question failed', err);
+    }finally{
+      sendBtn.disabled = false;
+    }
+  }
+
+  function sendCurrentInput(){
+    const question = questionEl.value.trim();
+    if(!question) return;
+    questionEl.value = '';
+    ask(question);
+  }
+
+  sendBtn.addEventListener('click', sendCurrentInput);
+  questionEl.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' && !e.shiftKey){
+      e.preventDefault();
+      sendCurrentInput();
+    }
+  });
+  document.querySelectorAll('.chat-quick-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=> ask(btn.dataset.prompt));
+  });
+
+  // ---- formatting toolbar inside the floating answer window ----
+  // Self-contained and deliberately simple (no undo stack) — this is a
+  // small edit surface, not the main document.
+  function ansWrapSelection(styleProp, valueOrDelta, isSizeDelta){
+    const sel = window.getSelection();
+    if(!sel || sel.rangeCount === 0 || sel.isCollapsed || !answerContentEl.contains(sel.getRangeAt(0).commonAncestorContainer)){
+      return;
+    }
+    const range = sel.getRangeAt(0);
+    let value = valueOrDelta;
+    if(isSizeDelta){
+      const refNode = range.startContainer.nodeType === 3 ? range.startContainer.parentElement : range.startContainer;
+      const currentSize = parseFloat(window.getComputedStyle(refNode).fontSize) || 14;
+      value = Math.max(10, Math.min(40, currentSize + valueOrDelta)) + 'px';
+    }
+    const span = document.createElement('span');
+    span.style[styleProp] = value;
+    span.appendChild(range.extractContents());
+    range.insertNode(span);
+    if(styleProp === 'color'){
+      span.querySelectorAll('*').forEach(node => { node.style.color = value; });
+    }
+    sel.removeAllRanges();
+    const newRange = document.createRange();
+    newRange.selectNodeContents(span);
+    sel.addRange(newRange);
+  }
+  function ansRunCommand(cmd){
+    const sel = window.getSelection();
+    if(!sel || sel.rangeCount === 0 || !answerContentEl.contains(sel.getRangeAt(0).commonAncestorContainer)) return;
+    document.execCommand(cmd, false, null);
+  }
+  ['ans-bold-btn','ans-italic-btn','ans-dec-font-btn','ans-inc-font-btn'].forEach(id=>{
+    document.getElementById(id).addEventListener('mousedown', e=>e.preventDefault());
+  });
+  document.getElementById('ans-bold-btn').addEventListener('click', ()=> ansRunCommand('bold'));
+  document.getElementById('ans-italic-btn').addEventListener('click', ()=> ansRunCommand('italic'));
+  document.getElementById('ans-inc-font-btn').addEventListener('click', ()=> ansWrapSelection('fontSize', 2, true));
+  document.getElementById('ans-dec-font-btn').addEventListener('click', ()=> ansWrapSelection('fontSize', -2, true));
+  document.querySelectorAll('.ans-swatch').forEach(btn=>{
+    btn.addEventListener('mousedown', e=>e.preventDefault());
+    btn.addEventListener('click', ()=> ansWrapSelection('color', btn.dataset.color, false));
+  });
+})();
+</script>
+</body>
+</html>

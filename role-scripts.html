@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>תרחישי שיחה ראשונית לפי תפקידים — Postman</title>
+<style>
+  :root{
+    --orange:#FF6C37;
+    --ink:#1C1C1E;
+    --grey:#5B5F66;
+    --line:#E6E4E0;
+    --bg-card:#FBFAF8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#E3E6EA;
+    color:var(--ink);
+    font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
+  }
+  header{
+    background:var(--ink);
+    color:#fff;
+    padding:16px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  header .title{font-weight:700;font-size:16px;}
+  header a{color:#fff;text-decoration:none;font-size:13px;opacity:.85;}
+  header a:hover{opacity:1;}
+  .wrap{max-width:900px;margin:24px auto 60px;padding:32px 34px;background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(20,20,20,.06);}
+  h1{font-size:24px;margin:0 0 6px;}
+  .sub{color:var(--grey);font-size:14px;margin:0 0 28px;}
+  .legend{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-bottom:28px;
+  }
+  .legend-box{
+    background:#FFF6F1;
+    border:1px solid #FFD9C7;
+    border-radius:8px;
+    padding:14px 16px;
+    font-size:13.5px;
+  }
+  .legend-box b{color:var(--orange);display:block;margin-bottom:4px;font-size:13.5px;}
+  .legend-box.wide{grid-column:1 / -1;background:var(--bg-card);border-color:var(--line);}
+  .legend-box.wide b{color:var(--ink);}
+
+  #search-box{
+    width:100%;
+    padding:10px 14px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    font-size:14px;
+    font-family:inherit;
+    margin-bottom:20px;
+  }
+  #search-box:focus{outline:none;border-color:var(--orange);}
+
+  .role-card{
+    border:1px solid var(--line);
+    border-radius:8px;
+    margin-bottom:14px;
+    overflow:hidden;
+    box-shadow:0 1px 2px rgba(20,20,20,.04);
+  }
+  .role-head{
+    background:var(--bg-card);
+    padding:14px 18px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .role-head:hover{background:#FFF6F1;}
+  .role-head .num{color:var(--orange);font-weight:700;margin-left:8px;}
+  .role-head .name{font-weight:700;font-size:15px;}
+  .role-head .chev{color:var(--grey);font-size:13px;transition:transform .15s;}
+  .role-card.open .chev{transform:rotate(180deg);}
+  .role-body{
+    display:none;
+    padding:16px 20px 20px;
+  }
+  .role-card.open .role-body{display:block;}
+  .persona-line{color:var(--grey);font-style:italic;font-size:13px;margin-bottom:14px;}
+  .field{margin-bottom:12px;}
+  .field .label{font-weight:700;color:var(--orange);font-size:12.5px;margin-bottom:3px;}
+  .field .text{font-size:14px;line-height:1.6;}
+  .closing-note{
+    margin-top:24px;
+    padding:14px 18px;
+    background:var(--bg-card);
+    border-right:3px solid var(--orange);
+    border-radius:6px;
+    font-size:13px;
+    color:var(--grey);
+  }
+  .placeholder-hint{color:var(--orange);font-weight:700;}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="title">תרחישי שיחה ראשונית לפי תפקידים</span>
+  <a href="index.html">← חזרה לדף הבית</a>
+</header>
+
+<div class="wrap">
+  <h1>תרחישי שיחה ראשונית לפי תפקידים</h1>
+  <p class="sub">17 תרחישי פתיחה טלפונית, מאורגנים לפי תפקיד ולא לפי חברה. לכל תרחיש: שורת פתיחה, למה אני מתקשר, המתח, שאלת עוגן, הוכחה קלה, ותא קולי.</p>
+
+  <div class="legend">
+    <div class="legend-box">
+      <b>Postman Passport</b>
+      המפתח האמיתי (secret) נשאר ברשת הפנימית של הלקוח; הצרכן מקבל רק "credential reference", ופרוקסי פנימי שהלקוח שולט בו מממש את הגישה בפועל. הזווית הכי חזקה: ביטול גישה ורוטציה קורים במקום אחד, ולא בכל env/CI/מנג'ר סודות בנפרד.
+    </div>
+    <div class="legend-box">
+      <b>Postman Fabric (Fabric Gateway)</b>
+      שכבת ממשל אחת (single control plane) לתעבורת MCP וסוכני AI — פנימי וחיצוני, כולל חשיפת API-ים פנימיים כ-MCP tools ומדיניות ברמת consumer/route/service. הזווית הכי חזקה: כל הסוכנים שרצים בארגון עוברים תחת ממשל אחד, במקום שכל צוות יבנה משהו משלו.
+    </div>
+    <div class="legend-box wide">
+      <b>Security, Governance ו-Tests</b>
+      שלושה נושאים שחוזרים בכל שיחה, בלי קשר לתפקיד: Governance rules שנאכפים אוטומטית על spec לפני שהוא מתמזג, Tests שרצים ב-CI כשומר סף לפני production, ו-Security כמושג רחב שמתחיל ב-secrets (Passport) ולא נגמר בו. תמיד שווה לשאול איפה הבדיקה קורית היום — לפני deploy או רק אחריו.
+    </div>
+  </div>
+
+  <input type="text" id="search-box" placeholder="חיפוש לפי תפקיד...">
+
+  <div id="roles-list"></div>
+
+  <div class="closing-note">
+    הערה: המסמך בנוי לפי תפקיד ולא לפי חברה — לכן <span class="placeholder-hint">{שם פרטי}</span> ושם החברה בטקסט הם placeholders שיש להשלים לפני כל שיחה. לפני שמתקשרים, מומלץ לבדוק אם החברה הספציפית נמצאת במסלול Expand, Convert או New Logo — זה קובע אם נכון לפתוח בזווית Passport/Security, Fabric/Governance, או Tests/מהירות פיתוח.
+  </div>
+</div>
+
+<script>
+const ROLES = [
+  {t:"1. Chief Information Security Officer (CISO)", p:"Chief Information Security Officer",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם מנהלי אבטחת מידע בארגונים שבהם ה-API הפך לשכבת החשיפה הכי גדולה כרגע — במיוחד עם סוכני AI שמתחילים לגשת למערכות פנימיות בלי שמישהו תכנן את זה מראש.",
+   tension:"הכאב שחוזר על עצמו — מפתחות API מפוזרים בין קבצי env, מנג'רים של סודות ו-CI, ואף אחד לא יכול להגיד בביטחון מי מחזיק גישה למה, עד שקורה תקרית.",
+   anchor:"זה מצב שאתה מזהה אצלכם?",
+   proof:"יש לנו מוצר חדש בשם Postman Passport שמחליף את מפתחות ה-API בגישה מבוססת זהות והרשאות — הסוד עצמו לא עוזב את הרשת שלכם, וכל בקשה עוברת דרך פרוקסי פנימי שאתם שולטים בו. זה מענה ישיר לבעיית ה-secret sprawl שכל CISO מכיר. שווה 15 דקות שבהן אני מראה לך את זה בפועל?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי בארגון בגודל שלכם, ניהול הרשאות ל-API-ים הוא כרגע אחד הסיכונים הכי לא-נראים שיש. אשלח לך הודעה קצרה עם משהו קונקרטי על Postman Passport."},
+
+  {t:"2. Chief Information Officer (CIO)", p:"Chief Information Officer",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם CIO-ים על איחוד כלי ה-API בארגון — כמה כלים מקבילים כל צוות משתמש בהם, וכמה מזה בכלל נראה מההנהלה.",
+   tension:"התמונה הטיפוסית — כמה כלים מקבילים, עלויות רישוי גלויות אבל עלויות התיאום בין הצוותים בלתי נראות, ועכשיו גם סוכני AI מתחילים לגשת לאותם API-ים בלי שכבת ממשל אחת.",
+   anchor:"זה נשמע מוכר אצלכם?",
+   proof:"ה-Fabric Gateway שהשקנו נותן שכבת ממשל אחת לכל תעבורת ה-API והסוכנים — פנימי וחיצוני, עם מדיניות ברמת השירות. ארגונים שעברו לפלטפורמה אחת ראו הפחתה משמעותית ב-TCO לעומת כלים מפוזרים. שווה שנקבע 15 דקות?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר על איחוד שכבת ה-API וממשל סוכני ה-AI אצלכם — יש לי משהו קונקרטי שרלוונטי ברמת ה-CIO. אשלח הודעה קצרה."},
+
+  {t:"3. Vice President Research & Development", p:"VP R&D",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם מנהלי R&D על הדרך שבה עשרות צוותי פיתוח שומרים על סטנדרט אחד לבניית ובדיקת API-ים, בלי לחנוק את המהירות.",
+   tension:"כל צוות בונה ובודק בשיטה שלו — וזה בסדר עד שמגיע אודיט, שילוב בין צוותים, או תקרית בפרודקשן, ואז מתגלה שאין תמונה אחידה.",
+   anchor:"זה כאב שאתה מכיר מה-R&D שלכם?",
+   proof:"בארגונים בגודל דומה ראינו ירידה של 20–30% בתקריות API כשהבדיקה זזה שלב קדימה ונכנסת ל-CI, וקיצור משמעותי בזמן ההכנה לאודיטים. שווה 15 דקות שבהן אני מראה לך את זה בפועל?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי בארגון עם כמה צוותי R&D, סטנדרט אחיד לבניית ובדיקת API-ים הוא בדיוק המקום שבו יש הכי הרבה להרוויח. אשלח הודעה קצרה."},
+
+  {t:"4. Platform Director", p:"Platform Director",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם מנהלי פלטפורמה על הדרך שבה הצוותים הפנימיים מגלים, ניגשים ומשתמשים ב-API-ים אחד של השני.",
+   tension:"בלי קטלוג מרכזי, כל צוות בונה מחדש דברים שכבר קיימים במקום אחר בארגון — וזה עולה בזמן פיתוח שקשה לכמת אבל קל להרגיש.",
+   anchor:"מוכר?",
+   proof:"API Catalog נותן לכל הארגון מקום אחד לגלות API-ים קיימים, ו-Fabric מוסיף עליו שכבת ממשל אחידה גם לתעבורת סוכני AI. שווה רבע שעה שבה אני מראה לך את זה?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי ניראות מרכזית על ה-API-ים בארגון היא בדיוק מה שתפקיד כמו שלך צריך. אשלח הודעה קצרה."},
+
+  {t:"5. Platform Engineer", p:"Platform Engineer",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם מהנדסי פלטפורמה שאחראים בפועל על התחזוקה של שכבת ה-API הפנימית — mocks, monitors, סביבות.",
+   tension:"התחזוקה של כמה כלים מקבילים בשביל אותו רעיון — gateway אחד, monitoring אחר, תיעוד שלישי — גוזלת יותר זמן מהבנייה עצמה.",
+   anchor:"זה סוג העומס שאתה סוחב?",
+   proof:"כלי אחד למוקים, מוניטורים, בדיקות אוטומטיות, וגם MCP Gateway דרך Fabric — הכל תחת פלטפורמה אחת. שווה שאראה לך את זה בפועל?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי אחוד הכלים סביב הפלטפורמה שלכם יכול לחסוך לך זמן תחזוקה ממשי. אשלח הודעה קצרה."},
+
+  {t:"6. Senior API Architect / Inspector", p:"Senior API Architect (Inspector) — בדיקת תאימות API לסטנדרט הארגוני",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם מי שאחראי בפועל על בדיקת התאימות של API-ים לסטנדרט הארגוני, לפני שהם עולים לפרודקשן.",
+   tension:"בלי כלי אחד שאוכף את הסטנדרט אוטומטית, הבדיקה נשארת תלויה בעין אדם — וזה או מאט את השחרור, או מפספס דברים.",
+   anchor:"זה החיכוך שאתה מרגיש?",
+   proof:"כללי Governance שרצים אוטומטית על כל spec לפני מיזוג, ו-Tests שרצים ב-CI כשומר סף — כך הבדיקה זזה שלב קדימה בלי לעכב אף אחד. שווה 15 דקות?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי אכיפת סטנדרט API אוטומטית לפני production יכולה לחסוך לך הרבה בדיקות ידניות. אשלח הודעה קצרה.",
+   flag:"תפקיד לא שגרתי בשוק — מומלץ לוודא ב-ZoomInfo לפני החיוג."},
+
+  {t:"7. Director of Development", p:"Director of Development",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם מנהלי פיתוח על קצב השחרור מול איכות — במיוחד כשכל צוות בונה ובודק API-ים בשיטה שונה.",
+   tension:"תקלות ב-API מתגלות מאוחר מדי, כי אין שכבת בדיקה אחידה בין הצוותים — וכל תקלה כזו עוצרת יותר מצוות אחד.",
+   anchor:"מוכר?",
+   proof:"בארגונים בגודל דומה ראינו ירידה של 20–30% בתקריות API כשבדיקה וממשל נכנסים ל-pipeline באופן אחיד. שווה 15 דקות שבהן אני מראה לך את זה?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי סטנדרט בדיקה אחיד בין צוותי הפיתוח הוא בדיוק המקום שבו יש הכי הרבה להרוויח. אשלח הודעה קצרה."},
+
+  {t:"8. Software Application Engineer", p:"Software Application Engineer",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם מפתחים שסוחבים על הגב זמן debugging של API-ים לא מתועדים — פנימיים וחיצוניים.",
+   tension:"כל אינטגרציה חדשה מתחילה מ-Slack, מסמך ישן, או ניחוש — ולא ממקום אחד אמין שאפשר לבדוק בו את הדרישה בפועל.",
+   anchor:"מכיר את זה?",
+   proof:"spec מלא, מוקים ותיעוד חי במקום אחד — פחות ניחושים, פחות זמן על דברים שלא אמורים לגזול זמן. שווה חצי שעה שבה אני מראה לך?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי פחות זמן על ניחושי API ויותר זמן על קוד זה בדיוק מה שאני עוזר לצוותי פיתוח להשיג. אשלח הודעה קצרה."},
+
+  {t:"9. Head of DevOps", p:"Head of DevOps",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם ראשי DevOps על השלב שבו בדיקת API-ים נכנסת ל-pipeline — לפני deploy או רק אחריו.",
+   tension:"כשהבדיקה קורית רק אחרי deploy, כל תקלה היא incident שצריך לכבות באש, במקום שורת קוד שנתפסת מוקדם ב-CI.",
+   anchor:"מוכר?",
+   proof:"SDLC Automation שם בדיקות contract ו-security כ-gate ב-CI/CD, לפני שהקוד מגיע לפרודקשן. שווה 15 דקות?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי gate אוטומטי ל-API-ים לפני production יכול לחסוך לכם תקריות. אשלח הודעה קצרה."},
+
+  {t:"10. Director of DevOps", p:"Director of DevOps",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם מנהלי DevOps על איחוד הכלים בין כמה צוותים שכל אחד בנה pipeline משלו לבדיקת API.",
+   tension:"כשכל צוות DevOps בונה pipeline משלו לבדיקת API, יש 4–5 גרסאות של אותו רעיון בארגון, עם עלות תחזוקה כפולה ובלי שקיפות אחת להנהלה.",
+   anchor:"זה נשמע מוכר אצלכם?",
+   proof:"פלטפורמה אחת ל-testing ו-governance בין כל הצוותים, עם שקיפות אחת ל-TCO ולא תחזוקה מפוזרת. שווה שנקבע 15 דקות?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי איחוד ה-pipelines של בדיקת API בין הצוותים יכול לחסוך לכם עלות תחזוקה כפולה. אשלח הודעה קצרה."},
+
+  {t:"11. Collections Specialist", p:"Collections Specialist — ניהול Collections ו-Workspaces משותפים",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם מי שאחראי בפועל על ה-Collections וה-Workspaces המשותפים בארגון — מי רואה מה, ומי יכול לערוך מה.",
+   tension:"כשה-Collections מתרבים בלי מבנה, קשה לדעת מה עדיין רלוונטי, מה כפול, ומה נחשף בטעות לגישה רחבה מהמתוכנן.",
+   anchor:"מוכר?",
+   proof:"Private Workspaces, הרשאות ברמת Collection, וניראות מלאה על מה ציבורי ומה לא — בלי לשנות את איך שהצוותים עובדים היום. שווה 15 דקות?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי סדר ב-Collections וב-Workspaces המשותפים חוסך הרבה כאב ראש בהמשך. אשלח הודעה קצרה.",
+   flag:"תפקיד לא שגרתי בשוק — מומלץ לוודא ב-ZoomInfo לפני החיוג."},
+
+  {t:"12. Manager of Integration Engineering", p:"Manager of Integration Engineering",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם מנהלי הנדסת אינטגרציות על הדרך שבה הארגון מחבר בין מערכות פנימיות, ספקים ושותפים.",
+   tension:"כל אינטגרציה חדשה היא עוד חבילת API-ים לתחזק, וזה גדל מהר יותר מהיכולת לעקוב אחריו.",
+   anchor:"מרגיש מוכר?",
+   proof:"Fabric נותן שכבת gateway אחת לכל תעבורת ה-API והסוכנים בין המערכות, עם ניהול הרשאות מרוכז גם לספקים חיצוניים. שווה רבע שעה?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי בחברה שמתרחבת באינטגרציות, יש פוטנציאל גדול לפשט את התמונה. אשלח הודעה קצרה."},
+
+  {t:"13. Technology Integration Specialist", p:"Technology Integration Specialist",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם מי שבפועל מחבר בין המערכות — ה-API-ים בין ה-CRM, ה-ERP והכלים הפנימיים.",
+   tension:"כל מערכת מדברת בשפה שלה, והצוותים שמחברים ביניהן סופגים את זה — זמן פיתוח מתארך ותקלות מתגלות מאוחר מדי.",
+   anchor:"זה מצב שאתה מכיר מהבית?",
+   proof:"כשיש מקום אחד שמרכז את כל ה-API-ים ובודק אותם באופן עקבי, זמן האינטגרציה מתקצר בעשרות אחוזים, ותקלות נתפסות הרבה לפני שהן מגיעות ללקוח. יש טעם לקבוע רבע שעה?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי בסביבה עם כל כך הרבה מערכות שמדברות ביניהן, יש פוטנציאל גדול לפשט את התמונה. אשלח הודעה קצרה."},
+
+  {t:"14. Lead Software Architect", p:"Lead Software Architect",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם ארכיטקטים מובילים על האכיפה של סטנדרט תכנון API אחיד בין הצוותים.",
+   tension:"בלי אכיפה אוטומטית, סטנדרט התכנון נשאר מסמך שאף אחד לא בודק בזמן אמת — וכל צוות מפרש אותו קצת אחרת.",
+   anchor:"זה מוכר לך?",
+   proof:"כללי Governance שנאכפים ב-Spec Hub כבר בשלב התכנון, לפני שקוד נכתב — כך הסטנדרט הופך לברירת מחדל ולא להמלצה. שווה 15 דקות?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי אכיפת סטנדרט תכנון API אוטומטית בין הצוותים היא בדיוק מה שתפקיד כמו שלך צריך. אשלח הודעה קצרה."},
+
+  {t:"15. Chief Software Architect", p:"Chief Software Architect",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם ארכיטקטים ראשיים בארגונים גלובליים, על איך שומרים על תקן אחד לבניית API-ים בין עשרות צוותים.",
+   tension:"בארגון גלובלי כזה, לרוב יש עשרות צוותים שכל אחד בונה ובודק API-ים בשיטה שלו — וזה מקשה גם על ממשל תאגידי וגם על עמידה בדרישות רגולציה.",
+   anchor:"זה מוכר לך?",
+   proof:"כשיש תקן אחד וגלוי לכולם לניהול ולבדיקת API-ים, גם ההכנה לרגולטור וגם קצב הפיתוח משתפרים בצורה שרואים במספרים. שווה 15 דקות?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי בארגון גלובלי בגודל שלכם, יש הרבה מה להרוויח מתקן אחד ל-API-ים. אשלח הודעה קצרה."},
+
+  {t:"16. Information Technology Security Specialist", p:"IT Security Specialist",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם אנשי אבטחת מידע שמתעסקים בפועל עם ניהול הגישה וההרשאות ל-API-ים היום-יומיים.",
+   tension:"היום כל מפתח מחזיק מפתחות API בקובץ env או במנג'ר סודות, וסבב רוטציה או ביטול גישה לעובד שעוזב לוקח זמן ומשאיר חורים.",
+   anchor:"מוכר?",
+   proof:"עם Postman Passport, המפתח האמיתי לא עוזב את הרשת שלכם — ה-consumer מקבל רק credential reference, וביטול גישה קורה במקום אחד ולא בכל env בנפרד. שווה 15 דקות שבהן אני מראה לך את זה?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי ניהול מפתחות API מבוזר הוא בדיוק סוג הבעיה שאני עוזר לצוותי אבטחה לסגור. אשלח הודעה קצרה."},
+
+  {t:"17. Information Technology Developer", p:"IT Developer",
+   opening:"היי {שם פרטי}, זה יניב מ-Postman. אני אהיה קצר — יש לך חצי דקה?",
+   why:"אני מדבר עם מפתחים שחלק גדול מהיום שלהם לא הולך על כתיבת קוד, אלא על להבין API של מישהו אחר שלא מתועד טוב.",
+   tension:"כל פעם שצריך לגשת ל-API פנימי או חיצוני, יש עוד סבב של ניסוי וטעייה — כי המסמך הקיים לא תמיד תואם למה שה-API עושה בפועל.",
+   anchor:"מכיר את זה?",
+   proof:"spec, מוק ותיעוד חי במקום אחד — פחות זמן מבוזבז על ניחושים, יותר זמן על מה שבאמת חשוב. שווה חצי שעה?",
+   voicemail:"{שם פרטי}, זה יניב מ-Postman. מתקשר כי פחות זמן על ניחושי API זה בדיוק מה שאני עוזר למפתחים להשיג. אשלח הודעה קצרה."},
+];
+
+const listEl = document.getElementById('roles-list');
+
+function render(filterText){
+  listEl.innerHTML = '';
+  const q = (filterText || '').trim().toLowerCase();
+  ROLES.forEach((r, i) => {
+    if(q && !r.t.toLowerCase().includes(q) && !r.p.toLowerCase().includes(q)) return;
+    const card = document.createElement('div');
+    card.className = 'role-card';
+    card.innerHTML = `
+      <div class="role-head">
+        <span><span class="num">#${i+1}</span><span class="name">${r.t}</span></span>
+        <span class="chev">⌄</span>
+      </div>
+      <div class="role-body">
+        <div class="persona-line">פרסונה: ${r.p} — {שם פרטי}${r.flag ? ' · <span style="color:#D64545">' + r.flag + '</span>' : ''}</div>
+        <div class="field"><div class="label">שורת פתיחה</div><div class="text">"${r.opening}"</div></div>
+        <div class="field"><div class="label">למה אני מתקשר</div><div class="text">${r.why}</div></div>
+        <div class="field"><div class="label">המתח (הכאב שאתה מזהה)</div><div class="text">${r.tension}</div></div>
+        <div class="field"><div class="label">שאלת עוגן</div><div class="text">${r.anchor}</div></div>
+        <div class="field"><div class="label">הוכחה קלה</div><div class="text">${r.proof}</div></div>
+        <div class="field"><div class="label">תא קולי (אם לא עונים)</div><div class="text">"${r.voicemail}"</div></div>
+      </div>
+    `;
+    card.querySelector('.role-head').addEventListener('click', () => {
+      card.classList.toggle('open');
+    });
+    listEl.appendChild(card);
+  });
+}
+
+render('');
+document.getElementById('search-box').addEventListener('input', (e) => render(e.target.value));
+</script>
+
+</body>
+</html>

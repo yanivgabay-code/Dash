@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>כלי מכירות — Postman</title>
+<style>
+  :root{
+    --orange:#FF6C37;
+    --ink:#1C1C1E;
+    --grey:#5B5F66;
+    --line:#E6E4E0;
+    --bg-card:#FBFAF8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#E3E6EA;
+    color:var(--ink);
+    font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
+    min-height:100vh;
+  }
+  header{
+    background:var(--ink);
+    color:#fff;
+    padding:20px 40px;
+    font-size:18px;
+    font-weight:700;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:40px 24px 80px;}
+  h1{font-size:24px;margin:0 0 8px;}
+  .sub{color:var(--grey);margin:0 0 36px;font-size:14.5px;}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:18px;
+  }
+  .card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px;
+    box-shadow:0 1px 3px rgba(20,20,20,0.06);
+    text-decoration:none;
+    color:var(--ink);
+    display:block;
+    transition:box-shadow .15s, transform .15s;
+  }
+  .card:hover{box-shadow:0 6px 16px rgba(20,20,20,0.12);transform:translateY(-2px);}
+  .card.disabled{
+    color:var(--grey);
+    background:var(--bg-card);
+    cursor:default;
+    pointer-events:none;
+  }
+  .card .icon{font-size:26px;margin-bottom:10px;display:block;}
+  .card .t{font-weight:700;font-size:15.5px;margin-bottom:6px;}
+  .card .d{font-size:13px;color:var(--grey);}
+  .badge{
+    display:inline-block;
+    font-size:11px;
+    padding:2px 8px;
+    border-radius:20px;
+    margin-right:6px;
+    background:#FFF6F1;
+    color:var(--orange);
+    font-weight:700;
+  }
+  .badge.soon{background:#EEE;color:var(--grey);}
+</style>
+</head>
+<body>
+
+  <header>כלי מכירות — Postman</header>
+
+  <div class="wrap">
+    <h1>מרכז הכלים שלי</h1>
+    <p class="sub">כל כלי המכירה במקום אחד. לוחצים על כרטיס כדי לפתוח.</p>
+
+    <div class="grid">
+      <a class="card" href="postman-explainer.html">
+        <span class="icon">💬</span>
+        <span class="t">סקריפט שיחת לקוח <span class="badge">חי</span></span>
+        <span class="d">מוצרי Postman, השוואה למתחרים, תמחור, ובוט AI שעונה על שאלות תוך כדי שיחה. עברית.</span>
+      </a>
+
+      <a class="card" href="postman-explainer-en.html">
+        <span class="icon">💬</span>
+        <span class="t">Customer Pitch <span class="badge">Live</span></span>
+        <span class="d">Same script, English version.</span>
+      </a>
+
+      <a class="card" href="call_dashboard.html">
+        <span class="icon">📞</span>
+        <span class="t">Call Command Center <span class="badge">חי</span></span>
+        <span class="d">הכלי לשימוש חי במהלך שיחה — First Call.</span>
+      </a>
+
+      <a class="card" href="territory-command-center.html">
+        <span class="icon">🗺️</span>
+        <span class="t">Territory Command Center <span class="badge">חי</span></span>
+        <span class="d">98 חשבונות — Accounts, Usage, Live Deals, Expansion, Contacts, Quality Leads, Follow-ups, Self-Serve, Snapshot.</span>
+      </a>
+
+      <a class="card" href="role-scripts.html">
+        <span class="icon">🎯</span>
+        <span class="t">תרחישי שיחה ראשונית <span class="badge">חי</span></span>
+        <span class="d">17 סקריפטי פתיחה טלפונית לפי תפקיד — CISO, CIO, VP R&D, DevOps, ארכיטקטים ועוד.</span>
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>

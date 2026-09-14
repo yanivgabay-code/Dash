@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8"/>
+<title>פיץ' ללקוח — מוצרי Postman</title>
+<style>
+  :root{
+    --orange:#FF6C37;
+    --ink:#1C1C1E;
+    --grey:#5B5F66;
+    --line:#E6E4E0;
+    --bg-card:#FBFAF8;
+    --bg-page:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg-page);
+    color:var(--ink);
+    font-family:"Segoe UI","Arial Hebrew","Noto Sans Hebrew",Arial,sans-serif;
+    line-height:1.7;
+  }
+  header.top{
+    padding-bottom:28px;
+    border-bottom:3px solid var(--orange);
+    margin-bottom:36px;
+  }
+  header.top h1{font-size:26px;margin:0 0 8px;}
+  header.top p{color:var(--grey);margin:0;font-size:15px;}
+  h2{font-size:20px;margin:52px 0 6px;display:flex;align-items:baseline;gap:10px;}
+  h2 .num{color:var(--orange);font-size:20px;}
+  .lead{color:var(--grey);font-size:15px;margin:0 0 22px;}
+  .stage-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px;}
+  .stage{background:var(--bg-card);border:1px solid var(--line);border-radius:8px;padding:14px 12px;box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  .stage.core{border-color:var(--orange);background:#FFF6F1;}
+  .stage .n{font-size:12px;color:var(--grey);}
+  .stage .t{font-weight:600;font-size:15px;margin:2px 0 6px;}
+  .stage .who{font-size:12px;color:var(--grey);margin-bottom:6px;}
+  .stage .d{font-size:13px;}
+  .say{
+    background:#F3F7F5;
+    border-right:3px solid #2E7D5B;
+    border-radius:6px;
+    padding:12px 16px;
+    margin:16px 0;
+    font-size:14.5px;
+  }
+  .say b.tag{color:#2E7D5B;display:block;font-size:12px;margin-bottom:4px;}
+  .offer-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;}
+  .offer{background:var(--bg-card);border:1px solid var(--line);border-radius:8px;padding:16px 18px;box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  .offer .t{font-weight:700;color:var(--orange);font-size:14px;margin-bottom:8px;}
+  .offer p{margin:0;font-size:13.5px;}
+  .cross-box{margin-top:14px;background:#FFF6F1;border:1px solid #FFD9C7;border-radius:8px;padding:14px 18px;font-size:13.5px;}
+  .cross-box b{color:var(--orange);}
+  .group-title{font-size:14px;font-weight:700;color:var(--grey);margin:26px 0 10px;}
+  .prod{border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin-bottom:12px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  .prod .name{font-weight:700;font-size:15.5px;margin-bottom:8px;}
+  .prod .pitch{font-size:14px;}
+  .obj{border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin-bottom:10px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  .obj .q{font-weight:600;font-size:14px;margin-bottom:6px;}
+  .obj .a{font-size:13.5px;color:var(--grey);}
+  .final{margin-top:56px;padding:22px 22px 6px;border-top:3px solid var(--ink);}
+  .final h2{margin-top:0;}
+  .final p{font-size:14.5px;}
+  .final ul{font-size:14.5px;padding-right:20px;}
+  .final li{margin-bottom:8px;}
+  .ai-box{
+    background:#FFF6F1;
+    border:1px solid #FFD9C7;
+    border-radius:6px;
+    padding:20px 22px;
+    margin:18px 0;
+  }
+  .ai-box .h{font-weight:700;color:var(--orange);font-size:15px;margin-bottom:8px;}
+  .ai-box p{font-size:14.5px;margin:0 0 12px;}
+  .ai-box p:last-child{margin-bottom:0;}
+  @media (max-width:720px){
+    .stage-row{grid-template-columns:1fr 1fr;}
+    .offer-grid{grid-template-columns:1fr;}
+  }
+
+  /* --- app shell: framed container + top bar + 3-column layout --- */
+  html, body{height:100%;}
+  body{overflow:hidden;background:#E3E6EA;}
+  .wrap{max-width:880px;margin:20px auto 40px;padding:32px 34px 60px;background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(20,20,20,0.06);}
+
+  #app-frame{
+    position:fixed;
+    inset:18px;
+    background:#fff;
+    border-radius:14px;
+    box-shadow:0 12px 40px rgba(20,22,30,0.18);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    direction:rtl;
+  }
+
+  #edit-toolbar{
+    flex-shrink:0;
+    height:52px;
+    background:var(--ink);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 18px;
+    font-size:13px;
+    direction:rtl;
+  }
+  #doc-title{font-weight:700;font-size:14px;margin-left:12px;white-space:nowrap;}
+  #edit-toolbar button{
+    background:var(--orange);
+    color:#fff;
+    border:none;
+    border-radius:5px;
+    padding:6px 14px;
+    font-size:13px;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  #edit-toolbar button:disabled{background:#6B6B6E;cursor:default;}
+  #edit-toolbar button.secondary{background:#3A3A3C;}
+  #edit-toolbar .status{color:#B9B9BC;font-size:12px;margin-right:auto;}
+  #edit-toolbar .fmt-group{display:flex;gap:4px;padding-right:10px;border-right:1px solid #4A4A4C;}
+  #edit-toolbar .fmt-group button{
+    background:#3A3A3C;
+    min-width:32px;
+    padding:6px 10px;
+    font-weight:700;
+  }
+  #edit-toolbar .fmt-group button:hover{background:#4A4A4C;}
+  #edit-toolbar #italic-btn{font-style:italic;}
+  #edit-toolbar .swatch{
+    width:22px;
+    height:22px;
+    border-radius:4px;
+    border:2px solid #ffffff33;
+    cursor:pointer;
+    padding:0;
+  }
+  #edit-toolbar .swatch:hover{border-color:#fff;}
+
+  .edit-unit{
+    outline:2px dashed transparent;
+    border-radius:3px;
+    transition:outline-color .15s, background-color .15s;
+  }
+  .edit-unit[contenteditable="true"]:hover{
+    outline-color:#FFD9C7;
+    background-color:rgba(255,108,55,0.04);
+  }
+  .edit-unit[contenteditable="true"]:focus{
+    outline-color:var(--orange);
+    outline-style:solid;
+  }
+  .pitch-open{
+    background:#FFF6F1;
+    border:1px solid #FFD9C7;
+    border-radius:8px;
+    padding:20px 22px;
+    margin-bottom:8px;
+    font-size:15px;
+    box-shadow:0 1px 2px rgba(20,20,20,0.04);
+  }
+  .pitch-open .tag{color:var(--orange);font-weight:700;font-size:13px;margin-bottom:8px;display:block;}
+
+  #app-shell{
+    flex:1;
+    display:flex;
+    min-height:0;
+    direction:rtl;
+  }
+
+  /* --- right sidebar: topics nav --- */
+  #left-nav{
+    width:190px;
+    flex-shrink:0;
+    background:#FAFAFB;
+    border-left:1px solid var(--line);
+    padding:18px 12px;
+    overflow-y:auto;
+  }
+  #left-nav .nav-title{
+    font-weight:700;
+    color:var(--grey);
+    font-size:11.5px;
+    margin-bottom:10px;
+    padding:0 6px;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+  }
+  #left-nav .nav-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+    text-align:right;
+    background:none;
+    border:none;
+    color:var(--ink);
+    padding:10px 10px;
+    border-radius:6px;
+    font-size:14.5px;
+    font-weight:700;
+    font-family:inherit;
+    cursor:pointer;
+    margin-bottom:2px;
+  }
+  #left-nav .nav-item:hover{background:#FFF6F1;color:var(--orange);}
+  #left-nav .nav-item.active{background:#FFF1E8;color:var(--orange);border-right:3px solid var(--orange);padding-right:7px;}
+  #left-nav .nav-sep{height:1px;background:var(--line);margin:10px 4px;}
+  #left-nav .nav-panel .arrow{color:var(--orange);font-size:12px;}
+  #left-nav .nav-item.active .arrow{color:var(--orange);}
+  .nav-item-row{display:flex;align-items:center;gap:2px;}
+  .nav-item-row .nav-item{flex:1;margin-bottom:0;}
+  .chevron-btn{
+    background:none;
+    border:none;
+    color:var(--grey);
+    font-size:13px;
+    cursor:pointer;
+    padding:6px 6px;
+    border-radius:5px;
+    transition:transform .15s;
+  }
+  .chevron-btn:hover{color:var(--orange);}
+  .chevron-btn.open{transform:rotate(180deg);}
+  .nav-submenu{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .2s ease;
+  }
+  .nav-submenu.open{max-height:400px;overflow-y:auto;}
+  .nav-subitem{
+    display:block;
+    width:100%;
+    text-align:right;
+    background:none;
+    border:none;
+    color:var(--ink);
+    padding:7px 10px 7px 10px;
+    padding-right:22px;
+    border-radius:5px;
+    font-size:13px;
+    font-weight:600;
+    font-family:inherit;
+    cursor:pointer;
+    margin-bottom:1px;
+  }
+  .nav-subitem:hover{background:#FFF6F1;color:var(--orange);}
+  @media (max-width:900px){
+    #left-nav{display:none;}
+  }
+
+  /* --- center column: the actual document --- */
+  #center-content{
+    flex:1;
+    overflow-y:auto;
+    min-width:0;
+    background:#F6F6F7;
+  }
+
+  /* --- left sidebar: docked chat --- */
+  #chat-panel{
+    width:300px;
+    flex-shrink:0;
+    background:#fff;
+    border-right:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+  }
+  @media (max-width:1100px){
+    #chat-panel{display:none;}
+  }
+  .chat-header{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:14px 16px;
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  .chat-header-icon{font-size:18px;}
+  .chat-header-title{font-weight:700;font-size:14px;}
+  .chat-quick{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  .chat-quick-btn{
+    text-align:right;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:12px;
+    font-family:inherit;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .chat-quick-btn:hover{border-color:var(--orange);color:var(--orange);}
+  #chat-log{
+    flex:1;
+    overflow-y:auto;
+    padding:14px 16px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .chat-placeholder{color:var(--grey);font-size:13px;}
+  .chat-msg{
+    max-width:92%;
+    padding:9px 12px;
+    border-radius:8px;
+    font-size:13.5px;
+    line-height:1.55;
+    white-space:pre-wrap;
+  }
+  .chat-msg.user{
+    align-self:flex-start;
+    background:var(--ink);
+    color:#fff;
+  }
+  .chat-msg.bot{
+    align-self:flex-end;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    color:var(--ink);
+  }
+  .chat-msg.bot.loading{color:var(--orange);}
+  .chat-msg.bot.err{color:#D64545;border-color:#D64545;}
+  #chat-input-row{
+    display:flex;
+    gap:8px;
+    padding:12px;
+    border-top:1px solid var(--line);
+    flex-shrink:0;
+  }
+  #chat-question{
+    flex:1;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:13.5px;
+    font-family:inherit;
+    resize:none;
+  }
+  #chat-send{
+    background:var(--orange);
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    padding:0 16px;
+    font-size:13px;
+    cursor:pointer;
+  }
+  #chat-send:disabled{background:#B9B9BC;cursor:default;}
+  .chat-disclaimer{
+    font-size:10.5px;
+    color:var(--grey);
+    padding:0 16px 12px;
+    flex-shrink:0;
+  }
+
+  /* --- slide-in side panels (objections / Fabric / Passport / ASA) ---
+     position:absolute here (not fixed) so they're contained inside
+     #app-frame — which is the nearest positioned ancestor — instead of
+     the raw browser viewport. */
+  #panel-backdrop{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.25);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s;
+    z-index:996;
+  }
+  #panel-backdrop.open{opacity:0;pointer-events:auto;}
+  /* Floating, draggable window instead of an edge-anchored drawer.
+     Position is top/left (not right/bottom) from the start, since
+     dragging math needs one consistent anchor pair — JS moves it by
+     just rewriting these two values. */
+  .side-panel{
+    position:absolute;
+    top:20px;
+    left:calc(100% - 520px);
+    width:480px;
+    height:calc(100% - 40px);
+    max-width:92%;
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.28);
+    opacity:0;
+    visibility:hidden;
+    transform:scale(0.96);
+    transition:opacity .15s ease, transform .15s ease;
+    z-index:997;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .side-panel.open{opacity:1;visibility:visible;transform:scale(1);}
+
+  /* This one specifically opens centered over the main content area
+     instead of tucked near the right edge — that's the spot marked in
+     the screenshot. It's still just as draggable afterward. */
+  #chat-answer-window{
+    top:60px;
+    left:calc(50% - 240px);
+    width:480px;
+    height:calc(100% - 120px);
+  }
+  .panel-header{
+    background:var(--ink);
+    color:#fff;
+    padding:14px 18px;
+    font-size:16px;
+    font-weight:700;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-shrink:0;
+    cursor:grab;
+    user-select:none;
+  }
+  .panel-header:active{cursor:grabbing;}
+  .panel-header .panel-close{
+    background:none;
+    border:none;
+    color:#fff;
+    font-size:18px;
+    cursor:pointer;
+  }
+  .panel-body{
+    padding:20px;
+    overflow-y:auto;
+    flex:1;
+  }
+  .panel-list{margin:0 0 16px;padding-right:20px;font-size:14px;}
+  .panel-list li{margin-bottom:8px;}
+  .panel-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12.5px;
+    margin-top:10px;
+  }
+  .panel-table th, .panel-table td{
+    border:1px solid var(--line);
+    padding:8px;
+    text-align:right;
+    vertical-align:top;
+  }
+  .panel-table th{background:var(--bg-card);font-weight:700;}
+
+  /* --- floating, editable bot-answer window --- */
+  /* --- light-themed formatting toolbar, duplicated inside the answer window --- */
+  .answer-fmt-group{
+    display:flex;
+    gap:5px;
+    margin-bottom:10px;
+    flex-wrap:wrap;
+  }
+  .answer-fmt-group .swatch{
+    width:22px;
+    height:22px;
+    border-radius:4px;
+    border:2px solid var(--line);
+    cursor:pointer;
+    padding:0;
+  }
+  .answer-fmt-group .swatch:hover{border-color:var(--orange);}
+  .answer-fmt-group button:not(.swatch){
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    color:var(--ink);
+    min-width:30px;
+    padding:5px 9px;
+    border-radius:5px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .answer-fmt-group button:not(.swatch):hover{border-color:var(--orange);color:var(--orange);}
+  #answer-italic-btn{font-style:italic;}
+
+  .answer-window-text{
+    font-size:14.5px;
+    line-height:1.6;
+    white-space:pre-wrap;
+    min-height:60px;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--bg-card);
+    outline:none;
+  }
+  .answer-window-text:focus{border-color:var(--orange);}
+  .answer-window-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:12px;
+  }
+  #save-answer-edit-btn{
+    background:var(--orange);
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    padding:8px 16px;
+    font-size:13px;
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .answer-window-status{font-size:12px;color:#2E7D5B;}
+</style>
+</head>
+<body>
+<div id="app-frame">
+<div id="edit-toolbar">
+<span id="doc-title">סקריפט שיחת לקוח — Postman</span>
+<button disabled="" id="undo-btn">↩ בטל שינוי אחרון</button>
+<button class="secondary" id="download-btn">⬇ הורד קובץ מעודכן</button>
+<button class="secondary" id="toggle-btn">🔒 נעילת עריכה</button>
+<div class="fmt-group">
+<button id="bold-btn" title="הדגשה (סמן טקסט ולחץ)">B</button>
+<button id="italic-btn" title="נטוי (סמן טקסט ולחץ)">I</button>
+<button id="dec-font-btn" title="הקטן טקסט (סמן טקסט ולחץ)">A-</button>
+<button id="inc-font-btn" title="הגדל טקסט (סמן טקסט ולחץ)">A+</button>
+<input id="color-input" title="צבע טקסט (סמן טקסט ובחר צבע)" type="color" value="#1C1C1E"/>
+<button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
+<button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
+<button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
+<button class="swatch" data-color="#2E7D5B" style="background:#2E7D5B" title="ירוק"></button>
+<button class="swatch" data-color="#2F6FED" style="background:#2F6FED" title="כחול"></button>
+<button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="אפור"></button>
+</div>
+<span class="status" id="save-status"></span>
+</div>
+<div id="panel-backdrop"></div>
+<div id="app-shell">
+<nav id="left-nav">
+<div class="nav-title">נושאים</div>
+<button class="nav-item" data-scroll="sec-pitch">פיץ' פתיחה</button>
+<button class="nav-item" data-scroll="sec-process">התהליך</button>
+<button class="nav-item" data-scroll="sec-ai">AI</button>
+<button class="nav-item" data-scroll="sec-stages">מה אנחנו מציעים</button>
+<div class="nav-item-row">
+<button class="nav-item" data-scroll="sec-products">מוצרי הליבה</button>
+<button class="chevron-btn" data-toggle="submenu-products" title="הצג את כל המוצרים">⌄</button>
+</div>
+<div class="nav-submenu" id="submenu-products">
+<button class="nav-subitem" data-scroll="prod-organizations">Organizations</button>
+<button class="nav-subitem" data-scroll="prod-api-catalog">API Catalog</button>
+<button class="nav-subitem" data-scroll="prod-private-network">Private API Network</button>
+<button class="nav-subitem" data-scroll="prod-governance-builder">Governance Rule Builder</button>
+<button class="nav-subitem" data-scroll="prod-secret-scanner">Secret Scanner</button>
+<button class="nav-subitem" data-scroll="prod-vault">Postman Vault</button>
+<button class="nav-subitem" data-scroll="prod-insights">Insights</button>
+<button class="nav-subitem" data-scroll="prod-api-reports">API Reports</button>
+<button class="nav-subitem" data-scroll="prod-agent-mode">Agent Mode</button>
+<button class="nav-subitem" data-scroll="prod-git-workflows">Native Git Workflows</button>
+<button class="nav-subitem" data-scroll="prod-cli-pipeline">CLI + Pipeline</button>
+<button class="nav-subitem" data-scroll="prod-mock-servers">Mock Servers</button>
+<button class="nav-subitem" data-scroll="prod-partner-workspaces">Partner Workspaces</button>
+<button class="nav-subitem" data-scroll="prod-asa">ASA</button>
+<button class="nav-subitem" data-scroll="prod-fabric-inline">Fabric</button>
+<button class="nav-subitem" data-scroll="prod-passport-inline">Passport</button>
+</div>
+<div class="nav-sep"></div>
+<button class="nav-item nav-panel" data-open-panel="panel-objections"><span>מיצוב והתנגדויות</span><span class="arrow">↗</span></button>
+<button class="nav-item nav-panel" data-open-panel="panel-fabric"><span>Fabric</span><span class="arrow">↗</span></button>
+<button class="nav-item nav-panel" data-open-panel="panel-passport"><span>Passport</span><span class="arrow">↗</span></button>
+<button class="nav-item nav-panel" data-open-panel="panel-asa"><span>ASA</span><span class="arrow">↗</span></button>
+<button class="nav-item nav-panel" data-open-panel="panel-database"><span>DATABASE</span><span class="arrow">↗</span></button>
+</nav>
+<main id="center-content">
+<div class="wrap" id="editable-root">
+<header class="top" id="sec-pitch">
+<h1 class="edit-unit" contenteditable="false">סקריפט לשיחת לקוח — מוצרי Postman</h1>
+</header>
+<!-- SECTION 0: 30-SECOND OPENING PITCH -->
+<section>
+<h2 class="edit-unit" contenteditable="false"><span class="num"><br/></span> פיץ' פתיחה — 30 שניות</h2>
+<div class="pitch-open edit-unit" contenteditable="false">
+<span class="tag"><span style="font-size: 15px; color: rgb(28, 28, 30);">"מצוין. תנו לי 30 שניות להסביר איך חברות מתמודדות עם זה היום.</span></span>
+      בניית APIs כבר לא באמת החלק הקשה. <b>האתגר מתחיל</b> כשה-APIs גדלים על פני כמה צוותים, מוצרים וסביבות.<br/>
+      בשלב הזה, ארגונים בדרך כלל נתקלים באותן בעיות: <b>אין נראות למה שקיים בכלל, תיעוד ובדיקות לא עקביים, כפילויות עבודה בין צוותים, ודרישות Governance ואבטחה שגדלות כל הזמן.</b><br/>
+      בזמן האחרון, יוזמות AI חשפו את הבעיות האלה עוד יותר, כי אפליקציות AI תלויות ב-APIs שאפשר לגלות, שאמינים, ושמתועדים כמו שצריך.<br/>
+<span style="color: rgb(29, 27, 27);"><span style="color: rgb(197, 27, 27);"><b><span style="color: rgb(241, 168, 9);"><span style="color: rgb(197, 143, 27);"><span style="color: rgb(197, 18, 253);">זה בדיוק המקום שבו Postman נכנס לתמונה</span></span></span></b></span></span>. <b>Postman היא פלטפורמה כוללת שבה צוותים יכולים לעצב, לבדוק, לתעד, לגלות ולנהל Governance על APIs</b> — במקום לנהל את כל זה על פני כלים ותהליכים מפוצלים.<br/>
+      בין אם אתם בשלב פרוטוטייפ לרעיון, ובין אם אתם מרחיבים מערכת שכבר בפרודקשן — Postman נותנת לכם את הכלים שאתם צריכים בכל שלב במחזור החיים של ה-API.<br/>
+      אז כן — הפתרון שלנו הוא הרבה יותר מרק שליחת requests. אנחנו מלווים את כל מחזור החיים של ה-API, מהעיצוב והתיעוד ועד למעקב, אוטומציה ו-Governance."
+    </div>
+</section>
+<!-- SECTION 1: THE PROCESS -->
+<section id="sec-process">
+<h2 class="edit-unit" contenteditable="false"><span class="num">1</span> התהליך: איך תוכנה נבנית היום</h2>
+<p class="lead edit-unit" contenteditable="false">כל ארגון פיתוח - Waterfall, Agile, או CI/CD - עובר בפועל את חמשת השלבים האלה. השאלה היחידה היא אם הם מחוברים או מבודדים.</p>
+<div class="stage-row">
+<div class="stage core">
+<div class="n">01</div>
+<div class="t edit-unit" contenteditable="false">עיצוב (Design)</div>
+<div class="who edit-unit" contenteditable="false">אדריכלים, מנהלי מוצר API</div>
+<div class="d edit-unit" contenteditable="false">כותבים מראש בדיוק מה ה-API עושה, ואילו כללי Governance חלים עליו — לפני שנכתבה שורת קוד אחת.</div>
+</div>
+<div class="stage core">
+<div class="n">02</div>
+<div class="t edit-unit" contenteditable="false">פיתוח (Develop)</div>
+<div class="who edit-unit" contenteditable="false">מפתחים</div>
+<div class="d edit-unit" contenteditable="false">כותבים את הקוד עצמו, עוברים code review, ומשלבים בין הרכיבים.</div>
+</div>
+<div class="stage core">
+<div class="n">03</div>
+<div class="t edit-unit" contenteditable="false">בדיקות (Test)</div>
+<div class="who edit-unit" contenteditable="false">Quality Engineers</div>
+<div class="d edit-unit" contenteditable="false">בודקים שהכל עובד כמו שתכננו — גם ידנית וגם אוטומטית.</div>
+</div>
+<div class="stage">
+<div class="n">04</div>
+<div class="t edit-unit" contenteditable="false">פריסה (Deploy)</div>
+<div class="who edit-unit" contenteditable="false">DevOps, Platform</div>
+<div class="d edit-unit" contenteditable="false">עוברים שער אישור, ואז עולים ל-production.</div>
+</div>
+<div class="stage">
+<div class="n">05</div>
+<div class="t edit-unit" contenteditable="false">מעקב (Monitor)</div>
+<div class="who edit-unit" contenteditable="false">Platform Engineer</div>
+<div class="d edit-unit" contenteditable="false">עוקבים אחרי המערכת בזמן אמת — התראות, עמידה ב-SLA.</div>
+</div>
+</div>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag"><br/><span style="font-size: 14.5px; color: rgb(28, 28, 30);">"אני תמיד ממקד את השיחה בשלבים 1 עד 3 — עיצוב, פיתוח ובדיקות — כי זה המקום שבו טעות עולה הכי פחות לתקן. פריסה ומעקב זה ערך נוסף שנוסיף בהמשך, אבל זה לא הליבה של מה שאני רוצה שתראו היום."</span></b></div>
+</section>
+<!-- SECTION 2: AI SHIFT — EXPANDED -->
+<section id="sec-ai">
+<h2 class="edit-unit" contenteditable="false"><span class="num">2</span> ה-AI: הנקודה שכל לקוח היום רוצה לדבר עליה</h2>
+<p class="lead edit-unit" contenteditable="false"><i>זה החלק שאני נותן לו הכי הרבה זמן בשיחה — כי זה מה שמעסיק כל CTO, VP Engineering ו-CISO שאני נפגש איתו ב-2026.</i></p>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag"><br/><span style="font-size: 14.5px; color: rgb(28, 28, 30);">"אני רוצה לעצור רגע על ולדבר על ה-AI, כי זה בעצם זאת נקודה מכרעת היום כמעט לכל ארגון. ה-AI לא משנה את חמשת השלבים האלה, אלא רק מגדיל בטירוף את המהירות שעוברים בהם. וכשהמהירות עולה, כל סדק שהיה קיים אצלכם גם קודם, נהיה גדול יותר, ומהר יותר."</span></b></div>
+<div class="ai-box">
+<div class="h edit-unit" contenteditable="false">מהירות מול איכות</div>
+<p class="edit-unit" contenteditable="false">"המפתחים שלכם כבר משתמשים בכלים כמו Copilot או Cursor לכתוב קוד — וזה מעולה למהירות. הבעיה היא שקצב הבדיקות לא גדל באותו הקצב. אתם מקבלים יותר קוד, אבל לא יותר וידוא שהוא תקין. וזה בדיוק הפער שגורם לזינוק בתקלות שמגיעות לפרודקשן."</p>
+<div class="h edit-unit" contenteditable="false">APIs שנבנו לבני אדם, לא לסוכני AI</div>
+<p class="edit-unit" contenteditable="false">"יש נקודה שרוב החברות לא חושבות עליה בכלל: כשסוכן AI הוא זה שצורך את ה-API שלכם ולא מפתח אנושי, הוא צריך מפרט אחרת. סוכן AI לא 'מבין לפי הקשר' כמו מפתח — הוא צריך שיוצהר לו במפורש אילו פעולות אפשריות ומה המגבלות שלהן. אם ה-API שלכם לא כתוב כך, הסוכן פשוט ישתמש בו לא נכון — ואתם לא תדעו את זה עד שזה יקרה בפרודקשן."</p>
+<div class="h edit-unit" contenteditable="false">Governance כבקבוק צוואר</div>
+<p class="edit-unit" contenteditable="false">"וכשהכל רץ מהר יותר, Governance ואבטחה נהיים בקבוק הצוואר של הארגון. תיעוד ראיות לביקורת — audit evidence — הופך מתהליך שוטף לריצה ידנית פעם ברבעון. ואת זה אף אחד לא רוצה לעשות בלחץ."</p>
+<div class="h edit-unit" contenteditable="false">נתון שאני פותח איתו</div>
+<p class="edit-unit" contenteditable="false">"89 אחוז מהמפתחים כבר משתמשים ב-AI לכתיבת קוד. רק 24 אחוז מהם בכלל מעצבים את ה-API שלהם כך שסוכן AI יידע להשתמש בו נכון. זה הפער שאנחנו סוגרים."</p>
+</div>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">איך אני ממשיך לחלק ה-AI של המוצר שלנו עצמו</b>
+      "וזה מוביל אותי לנקודה שהלקוחות שלנו הכי אוהבים: ה-AI שבתוך Postman הוא לא כמו ChatGPT כללי. אנחנו קוראים לו <b>Agent Mode</b>  והוא בנוי במיוחד לעולם ה-API. <div>הוא רץ בתוך הסביבה שלכם ב-Postman, מכיר את כל הפרויקטים, הבדיקות וההתראות שכבר קיימים אצלכם, ולא רק עונה על שאלות אלא גם מבצע פעולות בפועל: כותב חוזים חדשים, מתקן בדיקות שנשברו, ומזהה מתי גרסה חדשה שוברת הבטחה שנתנו למישהו בעבר.</div><div><br/></div><div>יש גם <b>AI Engineer</b>, שמתחבר למקום שבו שמור כל הקוד וההיסטוריה שלו (Git) ועושה עבודה עצמאית יותר/</div><div>לדוגמה, לעבור על כל ה-API-ים שלכם ולסמן אילו מהם כדאי להוציא משימוש כי הם ישנים או לא בשימוש, או לבדוק אוטומטית כל שינוי קוד חדש שמפתח מעלה למערכת, לפני שהוא מתקבל. </div><div>ואתם יכולים גם לבנות את כללי ה-Governance עצמם בעזרת AI — לכתוב אותם ב-Claude או ב-ChatGPT, ו-Postman הוא זה שבפועל אוכף אותם אוטומטית, על כל הפרויקטים, כל הזמן. </div><div>וזה בעצם ההבדל האמיתי: <b>אתם יכולים לעשות חלק מזה בעצמכם, או לקנות כמה כלים נפרדים — אבל אנחנו שמים את הכל תחת קורת גג אחת."
+    </b></div>
+</div></section>
+<!-- SECTION 3: WHAT POSTMAN OFFERS PER STAGE -->
+<section id="sec-stages">
+<h2 class="edit-unit" contenteditable="false"><span class="num">3</span> מה יש לנו להציע - שלב-שלב</h2>
+<p class="lead edit-unit" contenteditable="false"><b>"זה מה שאני קורא ה-golden path: בכל שלב יש כלי שאוכף אוטומטית את מה שהגדרנו בשלב הקודם - כך שאתם לא בודקים את זה שוב מאוחר יותר."</b></p>
+<div class="offer-grid">
+<div class="offer">
+<div class="t edit-unit" contenteditable="false">01 · עיצוב</div>
+<p class="edit-unit" contenteditable="false">"אתם כותבים מראש מה ה-API אמור לעשות — כמו חוזה מסודר לפני שמתחילים לבנות בפועל — ויש AI שעוזר לכתוב ולתקן את החוזה הזה. אפשר גם להגדיר כלל כמו 'כל בקשה חייבת אישור זהות', וזה לא נשאר המלצה שמישהו צריך לזכור לבדוק — הוא נאכף אוטומטית. ובזמן שצוות ה-backend עדיין בונה את המערכת האמיתית, צוות ה-frontend יכול כבר להתחיל לעבוד מול גרסה מדומה שמתנהגת כמו ה-API האמיתי (Mock Server), כדי שלא יצטרכו לחכות."</p>
+</div>
+<div class="offer">
+<div class="t edit-unit" contenteditable="false">02 · פיתוח</div>
+<p class="edit-unit" contenteditable="false">"כל פעם שמפתח כותב קוד, יש לנו כלי שרץ ברקע ובודק אוטומטית שהקוד עדיין עומד בחוזה שהוגדר בשלב העיצוב — ממש כמו בודק איות שרץ בזמן שאתה כותב מסמך, רק שהוא בודק לוגיקה ולא שגיאות כתיב. ואם מישהו משנה משהו שהולך לשבור הבטחה שמישהו אחר כבר סומך עליה — זה נתפס באותו רגע, לפני שהקוד בכלל נכנס למוצר, ולא כמו בדיקה מסורתית שמגלים את זה שבועיים אחר כך."</p>
+</div>
+<div class="offer">
+<div class="t edit-unit" contenteditable="false">03 · בדיקות</div>
+<p class="edit-unit" contenteditable="false">"יש כלי שמריץ אוטומטית חבילה שלמה של בדיקות בלחיצת כפתור, ויש עוזר AI שבונה בדיקות בסיסיות ישירות מהחוזה שכתבתם בשלב העיצוב, ואפילו מתקן בדיקה שנשברה. ואפשר גם לבדוק מה קורה בעומס גבוה — למשל מה יקרה אם בבת אחת יהיו הרבה יותר משתמשים, כמו ביום מבצע גדול."</p>
+</div>
+<div class="offer">
+<div class="t edit-unit" contenteditable="false">04–05 · פריסה ומעקב</div>
+<p class="edit-unit" contenteditable="false">"יש בדיקות אוטומטיות שרצות כל הזמן על ה-API-ים שפונים לעולם החוץ, כדי לוודא שהם באמת עונים ועובדים. יש גרסה מקבילה שרצה בתוך הרשת הפנימית שלכם, מאחורי כל שכבות האבטחה, ל-API-ים שלא פתוחים לעולם. ו-Insights מזהה פערים על סמך התעבורה האמיתית שקורית בפועל."</p>
+</div>
+</div>
+<div class="cross-box edit-unit" contenteditable="false"><b>
+      "שני דברים חשוב שתדעו — הם לא שייכים לשלב אחד, הם רצים על פני כולם: </b><div><b>API Catalog</b> נותן לכם תצוגה אחת של כל ה-APIs שבפיתוח בארגון — לא רק אלה שכבר חיים ב-gateway בפרודקשן. זה ההבדל המרכזי בינינו ל-Kong, Apigee או Boomi — הם מראים לכם רק מה שכבר רץ, אנחנו מראים לכם גם מה שבבנייה.</div><div> ו<b>Agent Mode</b> עם <b>AI Engineer</b> זמינים בכל שלב — לא עוזרים כלליים, אלא כלים שמכירים את הקונטקסט שלכם ובפועל מבצעים פעולות."
+    </div></div>
+</section>
+<!-- SECTION 4: CORE PRODUCTS -->
+<section id="sec-products">
+<h2 class="edit-unit" contenteditable="false"><span class="num">4</span> מוצרי הליבה — מה אני אומר על כל אחד</h2>
+<div class="group-title edit-unit" contenteditable="false">ניהול API ושירותים</div>
+<div class="prod" id="prod-organizations">
+<div class="name edit-unit" contenteditable="false">Organizations — ניהול ארגוני</div>
+<div class="pitch edit-unit" contenteditable="false">"זו שכבת הניהול שקובעת מי יכול לגשת למה — צוותים, הרשאות, ו-Governance אחיד על פני כל הארגון. תחשבו על בנק עם 40 צוותי פיתוח: Organizations מאפשר לי להגדיר שצוות התשלומים לא יכול בכלל לגעת ב-workspace של משאבי אנוש — בלי שמישהו צריך לנהל את זה ידנית כל יום."</div>
+</div>
+<div class="prod" id="prod-api-catalog">
+<div class="name edit-unit" contenteditable="false">API Catalog — קטלוג API</div>
+<div class="pitch edit-unit" contenteditable="false">"זו תצוגה מרכזית אחת של כל ה-APIs והשירותים שלכם — מי הבעלים, מה המצב שלו ב-CI, מה קצב השגיאות שלו בפרודקשן. אם מנהל פלטפורמה שלכם רוצה לדעת אילו APIs לא עומדים בתקן האבטחה, הוא מקבל ציון תאימות לכל אחד — בלי לחפש ידנית ב-20 workspaces."</div>
+</div>
+<div class="prod" id="prod-private-network">
+<div class="name edit-unit" contenteditable="false">Private API Network — רשת API פרטית</div>
+<div class="pitch edit-unit" contenteditable="false">"אתם מפרסמים APIs פנימיים מאושרים כך שצוותים אחרים בארגון יכולים למצוא ולהשתמש בהם — בלי לחשוף אותם לעולם החוץ. אם צוות אחד כבר בנה API לבדיקת זיהוי לקוח, צוות אחר לא בונה את זה מהתחלה כי הוא בכלל לא ידע שזה קיים."</div>
+</div>
+<div class="prod" id="prod-governance-builder">
+<div class="name edit-unit" contenteditable="false">Governance Rule Builder — בונה כללי Governance</div>
+<div class="pitch edit-unit" contenteditable="false">"פה אתם כותבים כלל בהתאמה אישית — למשל, שכל endpoint חייב שדה Authorization — והוא נאכף אוטומטית, לא כהמלצה, אלא כחסימה בפועל. גוף פיננסי יכול להגדיר כלל שאוסר להחזיר מספר כרטיס אשראי מלא ב-response, והכלל הזה רץ על כל מפרט חדש, לפני שהוא בכלל מגיע לסקירה אנושית."</div>
+</div>
+<div class="prod" id="prod-secret-scanner">
+<div class="name edit-unit" contenteditable="false">Secret Scanner — סורק סודות מקומי</div>
+<div class="pitch edit-unit" contenteditable="false">"זה תופס מפתחות ו-secrets שנחשפו בטעות — נניח, מפתח API שמפתח הדביק בבדיקה מהירה — ומנתב אותם ל-Vault המקומי לפני שהם בכלל מגיעים ל-Git. זה נתפס לפני commit, ולא מתגלה בסקירת אבטחה חצי שנה אחר כך."</div>
+</div>
+<div class="prod" id="prod-vault">
+<div class="name edit-unit" contenteditable="false">Postman Vault — כספת סודות</div>
+<div class="pitch edit-unit" contenteditable="false">"מקום מרכזי ומאובטח לשמור ולשתף secrets בתוך צוות — בלי שהערך עצמו נחשף לחברי הצוות שמשתמשים בו. שני מפתחים צריכים את אותו מפתח API כדי לעבוד על אותו workspace — שניהם משתמשים בו, ואף אחד מהם לא רואה אותו בטקסט גלוי."</div>
+</div>
+<div class="group-title edit-unit" contenteditable="false">מעקב בפרודקשן</div>
+<div class="prod" id="prod-insights">
+<div class="name edit-unit" contenteditable="false">Insights — תובנות שימוש</div>
+<div class="pitch edit-unit" contenteditable="false">"תמונת מצב אחידה על שימוש, אימוץ ופעילות API על פני כל הארגון — פנימי, שותפים, ופומבי. אם מנהל הנדסה רוצה לדעת אילו APIs בכלל לא בשימוש כבר חצי שנה לפני שמחליטים על תקציב לשנה הבאה — זה לוקח כמה קליקים, לא פרויקט."</div>
+</div>
+<div class="prod" id="prod-api-reports">
+<div class="name edit-unit" contenteditable="false">API Reports — דוחות API</div>
+<div class="pitch edit-unit" contenteditable="false">"דוח מאוחד שמראה שימוש, אימוץ והשפעה על פני workspaces פנימיים, שותפים ופומביים — במקום דוחות מפוזרים לכל workspace בנפרד. לפני חידוש חוזה, זה הדוח שמראה להנהלה כמה API-ים באמת נכנסו לשימוש ברבעון האחרון."</div>
+</div>
+<div class="group-title edit-unit" contenteditable="false">פיתוח ובדיקות</div>
+<div class="prod" id="prod-agent-mode">
+<div class="name edit-unit" contenteditable="false">Agent Mode — עוזר AI מובנה</div>
+<div class="pitch edit-unit" contenteditable="false">"זה לא עוזר כללי כמו ChatGPT — הוא בנוי במיוחד לעולם ה-API, ורץ בתוך הסביבה שלכם ב-Postman, ומכיר את כל הפרויקטים, הבדיקות וההתראות שכבר קיימים אצלכם. מפתח מבקש 'תבדוק אם הגרסה הזו שוברת הבטחה שנתנו למישהו בגרסה הקודמת' — Agent Mode לא רק עונה, הוא בפועל מריץ את ההשוואה על הקוד האמיתי ומראה תוצאה."</div>
+</div>
+<div class="prod" id="prod-git-workflows">
+<div class="name edit-unit" contenteditable="false">Native Git Workflows — עבודה טבעית עם Git</div>
+<div class="pitch edit-unit" contenteditable="false">"בדיוק כמו ש-Google Docs שומר גרסאות קודמות של מסמך, ומאפשר לכמה אנשים לעבוד עליו במקביל בלי לדרוס אחד את השני — כך גם אנחנו מנהלים גרסאות על מפרטי ה-API עצמם, באותה שיטה שמפתחים מכירים מניהול קוד (Git). שני מפתחים יכולים לשנות את אותו מפרט במקביל, כל אחד בגרסה נפרדת שלו, ולשלב את השינויים בסוף בלי לאבד שום דבר."</div>
+</div>
+<div class="prod" id="prod-cli-pipeline">
+<div class="name edit-unit" contenteditable="false">CLI ואינטגרציית Pipeline</div>
+<div class="pitch edit-unit" contenteditable="false">"אלה ממש אותן הבדיקות שרצות גם כשמפתח בודק את זה ידנית על המחשב שלו, וגם כשהמערכת האוטומטית שמעלה את הקוד לייצור מריצה אותן שוב, בלי מגע ידיים (בעולם הטכני זה נקרא CI/CD). אז אין מצב של 'עבד לי אצלי במחשב' ואז זה נשבר בשרת — זו בדיוק אותה בדיקה, פעמיים."</div>
+</div>
+<div class="prod" id="prod-mock-servers">
+<div class="name edit-unit" contenteditable="false">Mock Servers — שרתי דמה</div>
+<div class="pitch edit-unit" contenteditable="false">"מדמים API שלם בלי backend אמיתי, כדי שצוות frontend יתחיל לעבוד לפני שהקוד האמיתי בכלל קיים. הם צריכים מסך שמציג תשלומים, וה-backend עדיין באמצע הפיתוח — Mock Server מחזיר תשובות מדומות לפי המפרט, והעבודה מתקדמת במקביל."</div>
+</div>
+<div class="prod" id="prod-partner-workspaces">
+<div class="name edit-unit" contenteditable="false">Partner Workspaces — סביבות עבודה לשותפים</div>
+<div class="pitch edit-unit" contenteditable="false">"שיתוף פעולה מאובטח עם צדדים שלישיים על API-ים משותפים, עם הרשאות מדויקות למה שהם רואים ומה שהם יכולים לשנות. חברת סליקה משתפת עם שותף חיצוני רק את ה-collection הרלוונטי, בלי לחשוף לו את ה-workspace הפנימי."</div>
+</div>
+<div class="prod" id="prod-asa">
+<div class="name edit-unit" contenteditable="false">Advanced Security Administration — ASA</div>
+<div class="pitch edit-unit" contenteditable="false">"זה ה-Add-on שאני מביא לשולחן כשמדברים על אבטחה בקנה מידה Enterprise, ומוצר קיים ופעיל היום. בגדול, זה נותן לצוות האבטחה שליטה מדויקת יותר על מי יכול להתחבר, מאיפה, ואיך שומרים על הסודות (secrets) שלהם — כולל ניתוב אוטומטי של כניסות לפי דומיין (Domain Capture), לוח בקרה והתראות על ניסיונות חשיפה של סודות (Secret Scanner), חיבור לכספות חיצוניות שהם כבר עובדים איתן — כמו Azure Key Vault, HashiCorp, AWS Secrets Manager, 1Password — והצפנה במפתח שהם עצמם שולטים בו (BYOK). ארגון עם דרישת רגולציה להצפין את המידע שלו במפתח שהוא שולט בו לגמרי — BYOK מאפשר את זה בלי לתת ל-Postman גישה למפתח ההצפנה."</div>
+</div>
+<div class="prod" id="prod-fabric-inline">
+<div class="name edit-unit" contenteditable="false">Fabric — שכבת בקרה ל-AI (הרחבה בפאנל הצדדי)</div>
+<div class="pitch edit-unit" contenteditable="false">"Fabric הוא שכבת הבקרה המרכזית שלנו לעולם ה-AI בארגון. ככל שיותר צוותים עובדים עם מודלים שונים, בונים AI Agents ומתחברים לשרתי MCP ול-APIs פנימיים — כל צוות מתחיל לנהל בעצמו את החיבורים, ההרשאות וה-Credentials שלו. Fabric מרכז את כל התעבורה הזו דרך נקודת שליטה אחת: לאן בקשות ה-AI נשלחות, לאילו מודלים ו-APIs יש להן גישה, איך נשמרים הסודות, כמה זה עולה, ומה קרה בפועל — הכל תחת Governance אחיד."</div>
+</div>
+<div class="prod" id="prod-passport-inline">
+<div class="name edit-unit" contenteditable="false">Postman Passport — Governance לגישה ל-APIs (הרחבה בפאנל הצדדי)</div>
+<div class="pitch edit-unit" contenteditable="false">"Passport הוא שכבת Governance מרכזית לגילוי, בקשת גישה וצריכה מאובטחת של APIs בארגון. במקום שמפתחים ו-AI Agents יקבלו את ה-API Key האמיתי ויפזרו אותו בקבצים, סקריפטים ו-CI/CD — הם מקבלים Reference של Passport. ה-Credential האמיתי נשאר ב-Vault הקיים של הלקוח, ונפתר רק בזמן הקריאה בפועל ל-API. הארגון מקבל Visibility מלא על מי ביקש גישה, מי אישר, ואיך משתמשים ב-API — בלי לחשוף Secrets בשום שלב."</div>
+</div>
+</section>
+<!-- PANELS: these no longer sit in the scrolling flow. They open as
+     slide-in side panels, triggered from the table of contents. -->
+<div class="side-panel" id="panel-objections">
+<div class="panel-header">
+<span>מיצוב והתנגדויות — איך אני עונה</span>
+<button class="panel-close" data-close="panel-objections">✕</button>
+</div>
+<div class="panel-body">
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"זה נשמע כמו Waterfall — אנחנו עובדים Agile / CD."</div>
+<div class="a edit-unit" contenteditable="false">"השלבים האלה לא שערים של Waterfall — הם פעילויות איכות שקורות כל הזמן. בארגון CD: כל PR הוא 'עיצוב', כל merge הוא 'שער', כל deploy ל-staging הוא 'אימות'. השאלה היא לא אם השלבים קיימים אצלכם — השאלה היא אם הם מחוברים, או מפוצלים."</div>
+</div>
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"יש לנו כבר QE וכלים בשביל זה."</div>
+<div class="a edit-unit" contenteditable="false">"אז אני שואל: הכלים שלכם חולקים artifacts בין שלבים, או שכל כלי שומר בפורמט משלו? ואתם יכולים להוציא audit trail אוטומטית, או שזה סקר ידני כל רבעון?"</div>
+</div>
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"ה-AI שלנו כבר כותב את הבדיקות."</div>
+<div class="a edit-unit" contenteditable="false">"אם הסוכן שכתב את הקוד הוא גם זה שכתב את הבדיקה, יש ניגוד אינטרסים מובנה — הבדיקה תשקף את ההנחות של המימוש, לא את הכוונה של המפרט. השאלה היא לא אם AI יכול לייצר בדיקות — השאלה היא אם הבדיקות עצמאיות, מבוססות-spec, ותחת Governance."</div>
+</div>
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">פרטיות נתונים (רלוונטי לשיחות עם גופים פיננסיים)</div>
+<div class="a edit-unit" contenteditable="false">"Postman אף פעם לא נגיש למידע האמיתי של הלקוח — הוא נשאר תמיד בענן שלכם, AWS או Azure, ולא עובר אצלנו. בתוכנית Enterprise, נתוני ה-AI גם לא משותפים עם Postman לצורך אימון מודלים; בתוכניות נמוכות יותר — כן. יש לנו גם Trust Portal (דורש NDA), עם אישורי SOC 2, SOC 3 ו-ISO."</div>
+</div>
+</div>
+</div>
+<div class="side-panel" id="panel-fabric">
+<div class="panel-header">
+<span>Fabric</span>
+<button class="panel-close" data-close="panel-fabric">✕</button>
+</div>
+<div class="panel-body">
+<p class="lead edit-unit" contenteditable="false">Fabric הוא שכבת הבקרה המרכזית שלנו לעולם ה-AI בארגון.</p>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">איך אני מסביר את זה</b>
+      "ככל שיותר צוותים מתחילים להשתמש במודלים שונים — OpenAI, Claude, Gemini — לבנות AI Agents, ולהתחבר לשרתי MCP ול-APIs פנימיים, כל צוות מתחיל לנהל בעצמו את החיבורים, ההרשאות וה-Credentials שלו. Fabric מרכז את כל התעבורה הזו דרך נקודת שליטה אחת — כדי שהארגון יידע לאן בקשות ה-AI נשלחות, לאילו מודלים ו-APIs יש להן גישה, איך נשמרים הסודות, כמה זה עולה, ומה קרה בפועל."
+    </div>
+<div class="group-title edit-unit" contenteditable="false">מה Fabric מאפשר לארגון</div>
+<ul class="panel-list">
+<li><b>נקודת שליטה מרכזית</b> — לנהל ממקום אחד את התעבורה בין מודלים, Agents, שרתי MCP ו-APIs פנימיים.</li>
+<li><b>Routing ו-Reliability</b> — לנתב בקשות בין מודלים, לבצע Fallback אוטומטי כשמודל נופל, ולבחור את המודל המתאים לכל בקשה.</li>
+<li><b>Security ו-Credential Management</b> — ה-Agent לא צריך לראות או להחזיק את המפתחות בעצמו.</li>
+<li><b>Agent Governance</b> — לקבוע במדויק לאילו APIs, Tools או MCP Servers כל Agent מורשה לגשת.</li>
+<li><b>שליטה בעלויות</b> — לראות מי צורך כמה Tokens ובאיזו עלות, ולהגדיר תקציבים.</li>
+<li><b>Audit מלא</b> — לדעת מי הפעיל איזה Agent, על איזה מודל, לאיזה API ניגש, ואיזו Policy הופעלה.</li>
+</ul>
+<div class="cross-box edit-unit" contenteditable="false">
+<b>דוגמה שאני נותן:</b> יש לכם צוות שעובד עם OpenAI, צוות אחר עם Claude, ו-Agent שמתחבר ל-MCP Server — וכולם צריכים גישה למערכות פנימיות. היום כל אחד מהם מחזיק Keys, הרשאות ולוגים משלו, ואין שכבה מרכזית שרואה את כל התעבורה. עם Fabric, כל הבקשות עוברות דרך שכבת בקרה אחת: אם Agent מבקש GPT-5, Fabric יכול לאשר, לחסום, לנתב למודל אחר, לעבור ל-Claude אם יש תקלה, או לפצל את התעבורה בין כמה מודלים — הכל במקום אחד.
+    </div>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">משפט סיכום</b>
+      "Fabric הוא שכבת הבקרה המרכזית שמחברת בין ה-AI, ה-Agents, שרתי MCP וה-APIs של הארגון — ונותנת שליטה על התעבורה, האבטחה, ההרשאות, העלויות וה-Audit, במקום שכל אחד מהם ינוהל בנפרד."
+    </div>
+</div>
+</div>
+<div class="side-panel" id="panel-passport">
+<div class="panel-header">
+<span>Postman Passport</span>
+<button class="panel-close" data-close="panel-passport">✕</button>
+</div>
+<div class="panel-body">
+<p class="lead edit-unit" contenteditable="false">Passport הוא שכבת Governance מרכזית לגילוי, בקשת גישה וצריכה מאובטחת של APIs בארגון.</p>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">האתגר שאני מתאר</b>
+      "ככל שיש יותר APIs ויותר אנשים, אפליקציות ו-AI Agents שצריכים להשתמש בהם, קשה לדעת מי משתמש במה, למי יש גישה, ולאן ה-API Keys וה-Secrets מתפזרים. מפתח מחפש API ב-Slack או בתיעוד, מבקש גישה ממישהו, וה-Key האמיתי מגיע לקבצי .env, לסקריפטים, ל-CI/CD ולעוד מקומות. וככל שיותר AI Agents מתחילים לגשת ל-APIs, האתגר הזה רק גדל."
+    </div>
+<div class="cross-box edit-unit" contenteditable="false">
+<b>דוגמה שאני נותן:</b> צוות חדש בונה אפליקציה שצריכה API פנימי של לקוחות. המפתח צריך להבין מי הבעלים, למי לפנות, לקבל Key ולהכניס אותו למערכת. תכפילו את זה בעשרות APIs ומאות מפתחים — ובשלב מסוים הארגון כבר לא יודע מי מחזיק איזה Key, ולאיזה API יש לו גישה.
+    </div>
+<div class="group-title edit-unit" contenteditable="false">איך Passport פותר את זה</div>
+<ul class="panel-list">
+<li><b>גילוי מרכזי</b> — מפתחים ו-AI Agents מוצאים APIs מאושרים במקום אחד.</li>
+<li><b>בקשת גישה מבוקרת</b> — במקום לקבל את ה-Key האמיתי, מקבלים Reference של Passport.</li>
+<li><b>Secretless Consumption</b> — ה-Credential האמיתי נשאר ב-Vault הקיים של הלקוח, ונפתר רק בזמן הקריאה בפועל ל-API — בלי שהמשתמש או ה-Agent רואים או מעתיקים אותו.</li>
+<li><b>Visibility מלא</b> — מי ביקש גישה, מי אישר, ואיך בפועל משתמשים ב-API.</li>
+<li><b>עובד עם הכלים הקיימים</b> — משלים HashiCorp, AWS Secrets Manager, 1Password וכו', לא מחליף אותם.</li>
+</ul>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">משפט סיכום</b>
+      "Passport נותן לארגון דרך מרכזית לגלות APIs, לנהל את הגישה אליהם ולאפשר שימוש מאובטח בהם — בלי לחשוף את ה-Credentials האמיתיים."
+    </div>
+<div class="group-title edit-unit" contenteditable="false">מתי Passport ממש רלוונטי — סיגנלים מהלקוח</div>
+<table class="panel-table">
+<tr><th>מה הלקוח אומר</th><th>התאמה</th><th>למה זה מעניין</th></tr>
+<tr><td>המפתחים לא יודעים לאיזה APIs פנימיים או של שותפים הם אמורים לגשת</td><td>🟢 חזקה</td><td>API Network נותן מקום מרכזי ומבוקר לגילוי APIs מאושרים.</td></tr>
+<tr><td>גישה ל-API מתבצעת דרך Slack, Tickets, מייל או ידע שבטי</td><td>🟢🟢 חזקה מאוד</td><td>Passport מסדיר בקשות גישה, אישור, Scope, Audit וביטול גישה.</td></tr>
+<tr><td>אנחנו חוששים ש-API Keys יופיעו ב-Variables, Repos, Logs או קבצים מקומיים</td><td>🟢🟢 חזקה מאוד</td><td>Secretless Consumption מפחית את הצורך להפיץ את ה-API Keys עצמם.</td></tr>
+<tr><td>אנחנו משתמשים ב-HashiCorp / AWS Secrets Manager / 1Password / GitGuardian וכו'</td><td>🟢 חזקה</td><td>Passport משלים את הכלים הקיימים ומוסיף שכבת Access Governance.</td></tr>
+<tr><td>ל-AI Agents או לתהליכים אוטומטיים דרושה גישה ל-APIs אבל אנחנו לא יודעים איך לנהל אותה</td><td>🟢🟢 חזקה מאוד</td><td>זה אחד מתרחישי השימוש המרכזיים והמתפתחים של Passport.</td></tr>
+</table>
+</div>
+</div>
+<div class="side-panel" id="panel-asa">
+<div class="panel-header">
+<span>Advanced Security Administration — ASA</span>
+<button class="panel-close" data-close="panel-asa">✕</button>
+</div>
+<div class="panel-body">
+<p class="lead edit-unit" contenteditable="false">ASA הוא ה-Add-on שאני מביא לשולחן כשמדברים על אבטחה בקנה מידה Enterprise — מוצר קיים ופעיל היום, נמכר בתשלום נפרד על גבי Enterprise.</p>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">איך אני מסביר את זה</b>
+      "בגדול, זה נותן לצוות האבטחה שליטה מדויקת יותר על מי יכול להתחבר, מאיפה, ואיך שומרים על הסודות (secrets) שלהם. ברירת המחדל של Postman כבר מאובטחת, אבל ASA מוסיף שכבת בקרה נוספת שספציפית ל-Enterprise ולדרישות רגולציה כמו SOC 2, ISO או PCI."
+    </div>
+<div class="group-title edit-unit" contenteditable="false">מה כלול ב-ASA</div>
+<ul class="panel-list">
+<li><b>Domain Capture</b> — ניתוב אוטומטי של כניסות לפי דומיין, כך שכל עובד נכנס לחשבון הארגוני הנכון בלי בלבול בין חשבונות אישיים לחשבון החברה.</li>
+<li><b>Secret Scanner — לוח בקרה והתראות</b> — לא רק סורק סודות בודד, אלא תמונת מצב ארגונית: כמה ניסיונות חשיפה קרו, איפה, ומי היה מעורב.</li>
+<li><b>אינטגרציה עם כספות חיצוניות</b> — Azure Key Vault, HashiCorp, AWS Secrets Manager, 1Password — כדי ש-Postman יעבוד עם התשתית שהלקוח כבר משתמש בה, לא יחליף אותה.</li>
+<li><b>BYOK — הצפנה במפתח של הלקוח</b> — הלקוח שולט לגמרי במפתח ההצפנה; Postman לא מקבל אליו גישה בשום שלב.</li>
+</ul>
+<div class="cross-box edit-unit" contenteditable="false">
+<b>דוגמה שאני נותן:</b> ארגון פיננסי שכפוף לרגולציה שמחייבת אותו להצפין את כל המידע הרגיש שלו במפתח שהוא עצמו שולט בו, ולא סומך על אף ספק חיצוני שמחזיק את המפתח. עם BYOK, הארגון שומר את מפתח ההצפנה בכספת שלו — ו-Postman פשוט לא יכול לגשת למידע בלי המפתח הזה, אפילו אם הוא ירצה.
+    </div>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">משפט סיכום</b>
+      "ASA לא מחליף את האבטחה הבסיסית של Postman — הוא מוסיף עליה שכבת בקרה, ניראות ושליטה ברמת Enterprise, למי שצריך לעמוד בדרישות רגולציה מחמירות."
+    </div>
+</div>
+</div>
+
+<div class="side-panel" id="panel-database">
+  <div class="panel-header">
+    <span>DATABASE — השוואה, תמחור ו-Discovery</span>
+    <button class="panel-close" data-close="panel-database">✕</button>
+  </div>
+  <div class="panel-body">
+    <p class="lead edit-unit" contenteditable="false">מסד ידע פנימי — לא סקריפט לקריאה, אלא חומר רקע שהבוט יכול לשלוף ממנו כשאתה שואל אותו שאלה על מתחרים, תמחור, או מתי לפתוח ב-Fabric.</p>
+
+    <div class="group-title edit-unit" contenteditable="false">השוואה למתחרים — הפיץ' לכל מתחרה</div>
+
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">cURL — כלי שורת פקודה (CLI)</div>
+      <div class="pitch edit-unit" contenteditable="false">"cURL מושלם למפתח בודד ששולח בקשה אחת. בשנייה שהבקשה הזו צריכה להיות משותפת, נבדקת, או במעקב בפרודקשן — אין לה לאן להתקדם. Postman הוא המקום שבו זה הופך לנכס של הצוות."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">Bruno — API Client מקומי, Git-native</div>
+      <div class="pitch edit-unit" contenteditable="false">"Bruno הוא כלי נקי, מקומי ו-Git-native, טוב אם אתה עובד לבד. Postman הוא המקום שבו העבודה הזו הופכת לסביבת עבודה משותפת שכל הצוות שלך יכול לבנות עליה."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">Hoppscotch — API Client חינמי בדפדפן</div>
+      <div class="pitch edit-unit" contenteditable="false">"Hoppscotch חינמי, וזה יתרון אמיתי בשלב ה-client. אבל contract testing, מוניטורינג, Governance ויצירה בעזרת AI לא קיימים בשום tier. Postman נותן לך את מחזור החיים המלא."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">Kong Insomnia — API Client שמגיע חבילה עם Kong</div>
+      <div class="pitch edit-unit" contenteditable="false">"Insomnia מרגיש חינמי כי הוא מגיע בחבילה עם חוזה Kong שלכם, אבל client שמגיע בחבילה זה לא פלטפורמה. Postman יושב מעל ה-gateway, לכל הצוותים — לא רק לאלה שנוגעים ב-Kong."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">SmartBear Swagger — חבילת עיצוב ומחזור חיים</div>
+      <div class="pitch edit-unit" contenteditable="false">"Swagger נותן לכם login אחד על פני שלושה מוצרים שלא באמת חולקים מידע. Postman היא פלטפורמה אחת אמיתית, שבה שינוי ב-spec זורם ישירות לבדיקות, ל-mocks ולתיעוד."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">Stoplight — כלי עיצוב API (בהפסקת פיתוח)</div>
+      <div class="pitch edit-unit" contenteditable="false">"אף אחד, אפילו לא החברה שמחזיקה בו, לא ממשיך להשקיע ב-Stoplight. השאלה היא לא אם תעזבו, אלא לאן תגיעו. Postman הוא היעד המודרני למחזור החיים."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">SoapUI (OSS) — בדיקות SOAP/REST חינמיות</div>
+      <div class="pitch edit-unit" contenteditable="false">"היכולות של SoapUI ב-SOAP וב-WSDL הן ממש מהטובות בתחום, וזה חינמי. מה שהוא לא יכול לעשות זה לשים את הבדיקות שלכם בסביבת עבודה משותפת או לעקוב אחרי ה-APIs שלכם בפרודקשן. זה המקום שבו Postman נכנס לתמונה."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">ReadyAPI — בדיקות Enterprise בתשלום</div>
+      <div class="pitch edit-unit" contenteditable="false">"ReadyAPI הוא מוצר בדיקות Enterprise רציני, לא ה-SoapUI החינמי. Postman מריץ את אותן בדיקות, ואז מחבר אותן למוניטורינג ולקטלוג API חי, עם מסלול הגירה אמיתי."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">APIdog — פתרון זול הכל-באחד</div>
+      <div class="pitch edit-unit" contenteditable="false">"במחיר של 25$ למשתמש, APIdog נראה כמו מציאה לצד המחיר שלנו. אבל ברגע שאתם שואלים על Governance, קטלוג API, או אמון ברמת Enterprise — הפער הזה מפסיק להיות השיחה."</div>
+    </div>
+    <div class="prod">
+      <div class="name edit-unit" contenteditable="false">MuleSoft Anypoint — פלטפורמת אינטגרציה Enterprise</div>
+      <div class="pitch edit-unit" contenteditable="false">"MuleSoft מצטיין בחיבור בין מערכות Enterprise, ואנחנו לא מחליפים את זה. Postman היא הפלטפורמה לכל מפתח ושותף שנוגע ב-APIs שה-runtime של MuleSoft לא מגיע אליהם."</div>
+    </div>
+
+    <div class="group-title edit-unit" contenteditable="false">מטריצת כיסוי מחזור חיים</div>
+    <table class="panel-table">
+      <tr><th>יכולת</th><th>Postman</th><th>API Clients</th><th>כלי עיצוב</th><th>חבילות בדיקה</th><th>MuleSoft</th></tr>
+      <tr><td>עיצוב ותכנון spec</td><td>✓ מלא</td><td>— אין</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td></tr>
+      <tr><td>בדיקות פונקציונליות</td><td>✓ מלא</td><td>~ חלקי</td><td>~ חלקי</td><td>✓ מלא</td><td>~ חלקי</td></tr>
+      <tr><td>בדיקות עומס ואבטחה</td><td>✓ מלא</td><td>— אין</td><td>~ חלקי</td><td>✓ מלא</td><td>~ חלקי</td></tr>
+      <tr><td>שרתי Mock</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td><td>~ חלקי</td><td>~ חלקי</td></tr>
+      <tr><td>מוניטורינג רציף בפרודקשן</td><td>✓ מלא</td><td>— אין</td><td>— אין</td><td>— אין</td><td>✓ מלא</td></tr>
+      <tr><td>Governance וקטלוג API</td><td>✓ מלא</td><td>— אין</td><td>~ חלקי</td><td>— אין</td><td>~ חלקי</td></tr>
+      <tr><td>יצירה בעזרת AI</td><td>✓ מלא</td><td>~ חלקי</td><td>~ חלקי</td><td>~ חלקי</td><td>~ חלקי</td></tr>
+      <tr><td>סביבת עבודה משותפת</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td></tr>
+      <tr><td>אבטחת Enterprise (SSO/SCIM/RBAC)</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td></tr>
+    </table>
+
+    <div class="group-title edit-unit" contenteditable="false">תמחור וחבילות (2026)</div>
+    <div class="cross-box edit-unit" contenteditable="false">
+      מבנה החבילות עבר מ-Free/Basic/Professional/Enterprise ל-<b>Free/Solo/Team/Enterprise</b> ב-1 במרץ 2026. Free, Solo ו-Team הן חבילות <b>self-serve</b>; Enterprise היא <b>sales-assisted</b>. Professional היא חבילה legacy — אין הגירה בכפייה, לקוחות קיימים יכולים להישאר עליה ולהמשיך להתרחב.
+    </div>
+    <ul class="panel-list">
+      <li><b>ASA</b> (Advanced Security Administration) — ה-Add-on הראשון שאני ממקם בשיחה.</li>
+      <li><b>Fabric AI Gateway</b> — ה-Add-on השני שאני ממקם, אחרי ASA.</li>
+      <li><b>Passport</b> — Governance לגישה ל-APIs, ללא חשיפת Credentials.</li>
+      <li><b>Premium Support</b> — שכבת תמיכה מוגברת מעל Enterprise.</li>
+    </ul>
+
+    <div class="group-title edit-unit" contenteditable="false">שאלות Discovery ל-Fabric</div>
+    <div class="say edit-unit" contenteditable="false">
+      <b class="tag">שאלה 1</b>
+      "כמה צוותים בונים או מריצים היום אפליקציות AI או Agents, ואיך זה מנוהל?" — 🟢 "כמה צוותים," "כל אחד בונה בנפרד" = פרגמנטציה, סימן חזק. 🔴 "פרויקט קטן אחד" = כנראה מוקדם.
+    </div>
+    <div class="say edit-unit" contenteditable="false">
+      <b class="tag">שאלה 2</b>
+      "איך ה-Agents שלכם נגישים היום ל-LLMs, שרתי MCP ו-APIs פנימיים?" — 🟢 "כל צוות מנהל בעצמו," "יש לנו API Keys שונים בכל מקום," "בנינו Proxy משלנו" = סימן חזק מאוד. 🔴 "חיבור ישיר פשוט אחד" = סימן חלש.
+    </div>
+    <div class="say edit-unit" contenteditable="false">
+      <b class="tag">שאלה 3</b>
+      "עם צמיחת השימוש ב-AI, יש חששות סביב אבטחה, גישת Agents, Credentials, Governance או עלויות?" — 🟢 "Security שואלים איך שולטים בגישת Agents," "לא רוצים ש-Agents יחזיקו Credentials," "צריך Audit Trail" = סימן חזק מאוד. 🔴 "לא חושש," "ההוצאה זניחה" = כנראה לא בעדיפות כרגע.
+    </div>
+
+    <table class="panel-table">
+      <tr><th>נושא</th><th>מתאים ל-Fabric</th><th>לא מתאים כרגע</th></tr>
+      <tr><td>MCP</td><td>שימוש או תכנון של כמה MCP Servers</td><td>אין שימוש/תכנון ב-MCP</td></tr>
+      <tr><td>APIs פנימיים</td><td>Agents צריכים גישה מאובטחת ל-APIs פנימיים</td><td>Agents לא נוגעים במערכות הארגון</td></tr>
+      <tr><td>אבטחה</td><td>דרישות Governance חזקות</td><td>דרישות אבטחה מינימליות</td></tr>
+      <tr><td>Credentials</td><td>הרבה API Keys ומידע רגיש</td><td>API Key אחד פשוט</td></tr>
+      <tr><td>עלויות AI</td><td>צריך Visibility ושליטה בהוצאה</td><td>עלויות AI לא משמעותיות</td></tr>
+      <tr><td>ארכיטקטורה</td><td>סביבת AI מבוזרת בין צוותים/מערכות</td><td>חיבור ישיר פשוט אחד</td></tr>
+      <tr><td>זווית API Gateway</td><td>מחפשים Governance אג'נטי לצד התשתית הקיימת</td><td>רק רוצים להחליף API Gateway מסורתי</td></tr>
+    </table>
+    <div class="cross-box edit-unit" contenteditable="false">
+      <b>נקודת מיצוב:</b> לא למכור את Fabric כתחליף ל-Kong/Apigee — זו שכבת Governance מותאמת AI שיושבת לצד תשתית ה-API הקיימת.
+    </div>
+  </div>
+</div>
+
+<div class="side-panel" id="chat-answer-window">
+  <div class="panel-header">
+    <span>תשובת הבוט</span>
+    <button class="panel-close" data-close="chat-answer-window">✕</button>
+  </div>
+  <div class="panel-body">
+    <div class="fmt-group answer-fmt-group">
+      <button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
+      <button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
+      <button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
+      <button class="swatch" data-color="#2E7D5B" style="background:#2E7D5B" title="ירוק"></button>
+      <button class="swatch" data-color="#2F6FED" style="background:#2F6FED" title="כחול"></button>
+      <button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="אפור"></button>
+      <button id="answer-dec-font-btn" title="הקטן טקסט (סמן טקסט ולחץ)">A-</button>
+      <button id="answer-inc-font-btn" title="הגדל טקסט (סמן טקסט ולחץ)">A+</button>
+      <button id="answer-italic-btn" title="נטוי (סמן טקסט ולחץ)">I</button>
+      <button id="answer-bold-btn" title="הדגשה (סמן טקסט ולחץ)">B</button>
+    </div>
+    <div id="chat-answer-content" class="answer-window-text" contenteditable="true"></div>
+    <div class="answer-window-actions">
+      <button id="save-answer-edit-btn">💾 שמור עריכה</button>
+      <span id="save-answer-status" class="answer-window-status"></span>
+    </div>
+  </div>
+</div>
+
+</div>
+</main>
+<aside id="chat-panel">
+<div class="chat-header">
+<span class="chat-header-icon">🤖</span>
+<span class="chat-header-title">שאל על החומר</span>
+</div>
+<div class="chat-quick">
+<button class="chat-quick-btn" data-prompt="מה ההבדל בין Fabric ל-Passport?">מה ההבדל בין Fabric ל-Passport?</button>
+<button class="chat-quick-btn" data-prompt="הלקוח מתנגד למחיר, איך אני עונה?">הלקוח מתנגד למחיר, איך אני עונה?</button>
+<button class="chat-quick-btn" data-prompt="מה זה ASA ולמה זה Add-on?">מה זה ASA ולמה זה Add-on?</button>
+<button class="chat-quick-btn" data-prompt="הלקוח משתמש ב-Kong, איך אני עונה?">הלקוח משתמש ב-Kong, איך אני עונה?</button>
+</div>
+<div id="chat-log">
+<div class="chat-placeholder">שאל כל שאלה על מה שכתוב במסמך — התשובה תתבסס רק על התוכן שבדף, כולל הפאנלים הצדדיים.</div>
+</div>
+<div id="chat-input-row">
+<textarea id="chat-question" placeholder="הקלד שאלה..." rows="1"></textarea>
+<button id="chat-send">שלח</button>
+</div>
+<div class="chat-disclaimer">התשובות מבוססות על תוכן המסמך בלבד. כדאי לבדוק תשובות לפני שמסתמכים עליהן בשיחה חייה.</div>
+</aside>
+</div>
+</div>
+<script>
+(function(){
+  const root = document.getElementById('editable-root');
+  const undoBtn = document.getElementById('undo-btn');
+  const toggleBtn = document.getElementById('toggle-btn');
+  const downloadBtn = document.getElementById('download-btn');
+  const statusEl = document.getElementById('save-status');
+
+  // --- Turn only specific text-bearing elements into editable "units" ---
+  // Card / grid / row containers (.stage, .offer, .prod, .obj, .stage-row,
+  // .offer-grid, ul) are deliberately left OUT of this list. That's the fix
+  // for "deleting a line makes everything jump up": since those structural
+  // wrappers are never contenteditable themselves, the browser can't merge
+  // or remove them when you backspace inside the text — only the text
+  // inside the specific line changes, the card/grid box stays put.
+  const EDITABLE_SELECTORS = [
+    'header.top h1', 'header.top p',
+    'h2', '.lead',
+    '.stage .t', '.stage .who', '.stage .d',
+    '.say', '.ai-box .h', '.ai-box p',
+    '.offer .t', '.offer p',
+    '.cross-box', '.group-title',
+    '.prod .name', '.prod .pitch',
+    '.obj .q', '.obj .a',
+    '.final > p', '.final li',
+    '.pitch-open',
+    '.panel-list li'
+  ];
+  const units = new Set();
+  EDITABLE_SELECTORS.forEach(sel => root.querySelectorAll(sel).forEach(el => units.add(el)));
+  units.forEach(el => { el.classList.add('edit-unit'); el.setAttribute('contenteditable', 'true'); });
+
+  let editingLocked = false;
+  let undoStack = [];
+  const MAX_UNDO = 40;
+  let burstSnapshot = null;      // state of the document BEFORE the current typing burst
+  let debounceTimer = null;
+  const DEBOUNCE_MS = 700;       // pause in typing that counts as "one step" ending
+  let savedRange = null;         // selection kept alive across the color picker's native dialog
+
+  function setStatus(text){
+    statusEl.textContent = text;
+    clearTimeout(statusEl._t);
+    statusEl._t = setTimeout(()=>{ statusEl.textContent = ''; }, 2500);
+  }
+
+  function updateUndoButton(){
+    undoBtn.disabled = undoStack.length === 0;
+  }
+
+  function pushUndo(snapshot){
+    undoStack.push(snapshot);
+    if(undoStack.length > MAX_UNDO) undoStack.shift();
+    updateUndoButton();
+  }
+
+  // Typing is grouped into "steps": a step is a burst of typing with no
+  // pause longer than DEBOUNCE_MS. Only when the burst ends do we push ONE
+  // undo entry for that whole burst — so Undo reverts one step, not
+  // everything typed since you started editing.
+  function commitBurst(){
+    clearTimeout(debounceTimer);
+    if(burstSnapshot === null) return;
+    const current = root.innerHTML;
+    if(current !== burstSnapshot){
+      pushUndo(burstSnapshot);
+    }
+    burstSnapshot = null;
+  }
+
+  root.addEventListener('beforeinput', ()=>{
+    if(editingLocked) return;
+    if(burstSnapshot === null){
+      burstSnapshot = root.innerHTML;
+    }
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(commitBurst, DEBOUNCE_MS);
+  });
+
+  root.addEventListener('focusout', commitBurst);
+
+  undoBtn.addEventListener('click', ()=>{
+    commitBurst(); // flush any typing that hasn't been committed as a step yet
+    if(undoStack.length === 0) return;
+    const prev = undoStack.pop();
+    root.innerHTML = prev;
+    // innerHTML replacement wipes the contenteditable attributes we added —
+    // put them back on the restored content.
+    units.clear();
+    EDITABLE_SELECTORS.forEach(sel => root.querySelectorAll(sel).forEach(el => units.add(el)));
+    units.forEach(el => { el.classList.add('edit-unit'); el.setAttribute('contenteditable', editingLocked ? 'false' : 'true'); });
+    updateUndoButton();
+    setStatus('שינוי אחרון בוטל');
+  });
+
+  toggleBtn.addEventListener('click', ()=>{
+    commitBurst();
+    editingLocked = !editingLocked;
+    units.forEach(el => el.setAttribute('contenteditable', editingLocked ? 'false' : 'true'));
+    toggleBtn.textContent = editingLocked ? '✏️ עריכה פעילה' : '🔒 נעילת עריכה';
+  });
+
+  downloadBtn.addEventListener('click', ()=>{
+    commitBurst();
+    const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    const blob = new Blob([htmlContent], {type:'text/html;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'postman-explainer-edited.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setStatus('הקובץ הורד ✓');
+  });
+
+  // ---- formatting toolbar: each click is its own single undo step ----
+
+  function runCommand(cmd, value){
+    if(editingLocked) return;
+    commitBurst();
+    const before = root.innerHTML;
+    document.execCommand(cmd, false, value || null);
+    const after = root.innerHTML;
+    if(after !== before) pushUndo(before);
+  }
+
+  function wrapSelection(styleProp, valueOrDelta, isSizeDelta){
+    if(editingLocked) return;
+    const sel = window.getSelection();
+    if(!sel || sel.rangeCount === 0 || sel.isCollapsed || !root.contains(sel.getRangeAt(0).commonAncestorContainer)){
+      setStatus('סמן טקסט קודם');
+      return;
+    }
+    commitBurst();
+    const before = root.innerHTML;
+    const range = sel.getRangeAt(0);
+
+    let value = valueOrDelta;
+    if(isSizeDelta){
+      const refNode = range.startContainer.nodeType === 3 ? range.startContainer.parentElement : range.startContainer;
+      const currentSize = parseFloat(window.getComputedStyle(refNode).fontSize) || 15;
+      value = Math.max(10, Math.min(40, currentSize + valueOrDelta)) + 'px';
+    }
+
+    const span = document.createElement('span');
+    span.style[styleProp] = value;
+    span.appendChild(range.extractContents());
+    range.insertNode(span);
+
+    // Fix: a nested tag like <b> can have its OWN color set by a CSS class
+    // rule (e.g. ".cross-box b{color:orange}"). That rule targets the <b>
+    // element directly, so it wins over the wrapping span's colour no matter
+    // what we set on the span — inheritance only applies when nothing
+    // targets the element itself. So when recoloring, also stamp the new
+    // color directly onto every element inside the selection.
+    if(styleProp === 'color'){
+      span.querySelectorAll('*').forEach(node => { node.style.color = value; });
+    }
+
+    sel.removeAllRanges();
+    const newRange = document.createRange();
+    newRange.selectNodeContents(span);
+    sel.addRange(newRange);
+
+    const after = root.innerHTML;
+    if(after !== before) pushUndo(before);
+  }
+
+  document.querySelectorAll('.swatch').forEach(btn=>{
+    btn.addEventListener('mousedown', e=>e.preventDefault());
+    btn.addEventListener('click', ()=> wrapSelection('color', btn.dataset.color, false));
+  });
+
+  document.getElementById('bold-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('bold-btn').addEventListener('click', ()=> runCommand('bold'));
+
+  document.getElementById('italic-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('italic-btn').addEventListener('click', ()=> runCommand('italic'));
+
+  document.getElementById('inc-font-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('inc-font-btn').addEventListener('click', ()=> wrapSelection('fontSize', 2, true));
+
+  document.getElementById('dec-font-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('dec-font-btn').addEventListener('click', ()=> wrapSelection('fontSize', -2, true));
+
+  // Same formatting tools, duplicated inside the floating chat-answer
+  // window so you don't have to reach up to the main toolbar while
+  // editing an answer — they call the exact same functions above.
+  document.getElementById('answer-bold-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('answer-bold-btn').addEventListener('click', ()=> runCommand('bold'));
+
+  document.getElementById('answer-italic-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('answer-italic-btn').addEventListener('click', ()=> runCommand('italic'));
+
+  document.getElementById('answer-inc-font-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('answer-inc-font-btn').addEventListener('click', ()=> wrapSelection('fontSize', 2, true));
+
+  document.getElementById('answer-dec-font-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('answer-dec-font-btn').addEventListener('click', ()=> wrapSelection('fontSize', -2, true));
+
+  const colorInput = document.getElementById('color-input');
+  colorInput.addEventListener('mousedown', ()=>{
+    const sel = window.getSelection();
+    savedRange = (sel && sel.rangeCount > 0 && !sel.isCollapsed && root.contains(sel.getRangeAt(0).commonAncestorContainer))
+      ? sel.getRangeAt(0).cloneRange()
+      : null;
+  });
+  colorInput.addEventListener('input', (e)=>{
+    if(!savedRange){ setStatus('סמן טקסט קודם'); return; }
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedRange);
+    wrapSelection('color', e.target.value, false);
+  });
+
+  updateUndoButton();
+})();
+
+// --- left nav: scroll-to for sections, open for side panels ---
+(function(){
+  const backdrop = document.getElementById('panel-backdrop');
+  const centerContent = document.getElementById('center-content');
+
+  function openPanel(id){
+    const panel = document.getElementById(id);
+    if(!panel) return;
+    document.querySelectorAll('.side-panel.open').forEach(p => p.classList.remove('open'));
+    panel.classList.add('open');
+    backdrop.classList.add('open');
+  }
+  function closeAllPanels(){
+    document.querySelectorAll('.side-panel.open').forEach(p => p.classList.remove('open'));
+    backdrop.classList.remove('open');
+  }
+
+  document.querySelectorAll('[data-open-panel]').forEach(btn=>{
+    btn.addEventListener('click', ()=> openPanel(btn.dataset.openPanel));
+  });
+  document.querySelectorAll('.panel-close').forEach(btn=>{
+    btn.addEventListener('click', closeAllPanels);
+  });
+  backdrop.addEventListener('click', closeAllPanels);
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') closeAllPanels();
+  });
+
+  // Make each panel draggable by its header. Clicking the ✕ inside the
+  // header must NOT start a drag — checked via closest() below.
+  document.querySelectorAll('.side-panel').forEach(panel=>{
+    const header = panel.querySelector('.panel-header');
+    if(!header) return;
+    const frame = document.getElementById('app-frame');
+
+    header.addEventListener('mousedown', (e)=>{
+      if(e.target.closest('.panel-close')) return;
+      e.preventDefault();
+
+      const panelRect = panel.getBoundingClientRect();
+      const frameRect = frame.getBoundingClientRect();
+      // Lock in the panel's current on-screen spot as explicit left/top
+      // (in case it's still sitting at its default CSS position), then
+      // drag from there.
+      const startLeft = panelRect.left - frameRect.left;
+      const startTop = panelRect.top - frameRect.top;
+      panel.style.left = startLeft + 'px';
+      panel.style.top = startTop + 'px';
+
+      const startX = e.clientX;
+      const startY = e.clientY;
+
+      function onMove(ev){
+        panel.style.left = (startLeft + (ev.clientX - startX)) + 'px';
+        panel.style.top = (startTop + (ev.clientY - startY)) + 'px';
+      }
+      function onUp(){
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+
+  // Scroll within the center column itself (not the whole window) — this is
+  // what actually fixes "clicking a topic takes me to an external page":
+  // a plain href="#id" anchor was navigating the top-level document, which
+  // in this sandboxed viewer got treated as leaving the page. scrollIntoView
+  // finds the nearest scrollable ancestor (#center-content) and scrolls that
+  // instead, with no navigation involved at all.
+
+  // Brief highlight so you can spot exactly where you landed mid-call,
+  // without it staying loud/distracting.
+  function flashTarget(el){
+    if(!el) return;
+    el.style.transition = 'background-color .9s ease, box-shadow .9s ease';
+    el.style.backgroundColor = '#FFF1E6';
+    el.style.boxShadow = '0 0 0 2px rgba(255,108,55,0.35)';
+    setTimeout(()=>{
+      el.style.backgroundColor = '';
+      el.style.boxShadow = '';
+    }, 1100);
+  }
+
+  const scrollButtons = document.querySelectorAll('.nav-item[data-scroll]');
+  scrollButtons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const target = document.getElementById(btn.dataset.scroll);
+      if(target){
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        flashTarget(target);
+      }
+    });
+  });
+
+  // Product submenu: the chevron only toggles the list open/closed and does
+  // NOT scroll — the "מוצרי הליבה" button next to it keeps scrolling to the
+  // section exactly as before. Each product inside the list scrolls to that
+  // specific product's own card.
+  document.querySelectorAll('.chevron-btn[data-toggle]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const submenu = document.getElementById(btn.dataset.toggle);
+      if(!submenu) return;
+      submenu.classList.toggle('open');
+      btn.classList.toggle('open');
+    });
+  });
+  document.querySelectorAll('.nav-subitem[data-scroll]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const target = document.getElementById(btn.dataset.scroll);
+      if(target){
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        flashTarget(target);
+      }
+    });
+  });
+
+  // Highlight the nav item for whichever section is currently in view.
+  const sectionIds = Array.from(scrollButtons).map(b => b.dataset.scroll);
+  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+  function updateActive(){
+    let currentId = sectionIds[0];
+    for(const sec of sections){
+      if(sec.getBoundingClientRect().top - centerContent.getBoundingClientRect().top < 80){
+        currentId = sec.id;
+      }
+    }
+    scrollButtons.forEach(btn=>{
+      btn.classList.toggle('active', btn.dataset.scroll === currentId);
+    });
+  }
+  centerContent.addEventListener('scroll', updateActive);
+  updateActive();
+})();
+
+// --- docked chat panel: multi-turn, answers only from the document's own current text ---
+(function(){
+  // Works as-is inside Claude.ai (calls Anthropic directly — that only
+  // works in this sandbox). Once you host this file elsewhere (GitHub
+  // Pages, etc.), deploy anthropic-proxy-worker.js to Cloudflare Workers
+  // and replace the line below with your Worker's URL, e.g.
+  // 'https://postman-bot-relay.your-subdomain.workers.dev' — nothing
+  // else in this file needs to change.
+  const API_ENDPOINT = 'https://api.anthropic.com/v1/messages';
+
+  const logEl = document.getElementById('chat-log');
+  const questionEl = document.getElementById('chat-question');
+  const sendBtn = document.getElementById('chat-send');
+  const root = document.getElementById('editable-root');
+  const answerWindow = document.getElementById('chat-answer-window');
+  const answerContentEl = document.getElementById('chat-answer-content');
+  const saveEditBtn = document.getElementById('save-answer-edit-btn');
+  const saveStatusEl = document.getElementById('save-answer-status');
+  const backdrop = document.getElementById('panel-backdrop');
+  let placeholderRemoved = false;
+  let currentQuestionKey = null; // which question the open answer window belongs to
+
+  // Saved edits: if you correct an answer and save it, the exact same
+  // question (matched by trimmed, case-insensitive text) will show your
+  // saved version instead of asking the model again — this session, and
+  // in future sessions too if localStorage is available (it will be once
+  // this file is hosted for real; inside this preview it may or may not
+  // persist across reloads, but never breaks anything either way).
+  let savedCorrections = {};
+  try{
+    const raw = localStorage.getItem('postman-bot-corrections');
+    if(raw) savedCorrections = JSON.parse(raw);
+  }catch(e){ /* storage unavailable — corrections just won't persist */ }
+
+  function normalizeQuestion(q){
+    return q.trim().toLowerCase();
+  }
+
+  function saveCorrectionsToStorage(){
+    try{ localStorage.setItem('postman-bot-corrections', JSON.stringify(savedCorrections)); }
+    catch(e){ /* can't persist here — the in-memory copy still works for this session */ }
+  }
+
+  function openAnswerWindow(questionKey, text){
+    currentQuestionKey = questionKey;
+    answerContentEl.textContent = text;
+    saveStatusEl.textContent = '';
+    answerWindow.classList.add('open');
+    backdrop.classList.add('open');
+  }
+
+  saveEditBtn.addEventListener('click', ()=>{
+    if(!currentQuestionKey) return;
+    const editedText = answerContentEl.innerText.trim();
+    savedCorrections[currentQuestionKey] = editedText;
+    saveCorrectionsToStorage();
+    saveStatusEl.textContent = 'נשמר ✓ — יופיע אוטומטית בפעם הבאה שתישאל את זה';
+    questionEl.value = editedText;
+    // keep the log bubble in sync with the edited version too
+    const lastBotMsg = logEl.querySelector('.chat-msg.bot:last-of-type');
+    if(lastBotMsg) lastBotMsg.textContent = editedText;
+  });
+
+  // The actual fix for "give me another follow-up question" losing the
+  // topic: we now keep the real message history and resend it every call.
+  // The Anthropic API is stateless per-request — if you only send the new
+  // question, the model has zero memory of what "another one" refers to.
+  // The document text + instructions are embedded once, in the FIRST user
+  // turn only; every later turn is just the plain question, relying on the
+  // history already in the array for context.
+  let conversationHistory = [];
+  const MAX_HISTORY_MESSAGES = 16; // keep the first (doc-bearing) turn + recent ones
+
+  function addMessage(role, text){
+    if(!placeholderRemoved){
+      logEl.innerHTML = '';
+      placeholderRemoved = true;
+    }
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + role;
+    div.textContent = text;
+    logEl.appendChild(div);
+    logEl.scrollTop = logEl.scrollHeight;
+    return div;
+  }
+
+  function trimHistory(){
+    if(conversationHistory.length <= MAX_HISTORY_MESSAGES) return;
+    // Keep message 0 (has the document + instructions) and the most recent
+    // messages; drop the oldest middle ones so the doc-context never falls out.
+    const keepTail = MAX_HISTORY_MESSAGES - 1;
+    conversationHistory = [conversationHistory[0], ...conversationHistory.slice(-keepTail)];
+  }
+
+  async function ask(question){
+    if(!question) return;
+    sendBtn.disabled = true;
+    addMessage('user', question);
+
+    const questionKey = normalizeQuestion(question);
+
+    let userTurnContent;
+    if(conversationHistory.length === 0){
+      const documentText = root.innerText;
+      userTurnContent = 'להלן מסמך הדרכה למכירות של מוצרי Postman, בעברית. ענה על השאלות הבאות בהתבסס רק על המידע שכתוב במסמך הזה (כולל תוכן הפאנלים הצדדיים — מיצוב והתנגדויות, Fabric, Passport, ASA, DATABASE). אם התשובה לא מופיעה במסמך, אמור זאת בבירור ואל תמציא מידע. אתה עונה למוכר שנמצא באמצע שיחת מכירה חייה ועם הלקוח על הקו — תן תשובה קצרה וישירה, 2-3 משפטים לכל היותר, בעברית, בלי הקדמות.\\n\\nבנוסף: אם השאלה מתאימה למקרה שבו כדאי להחזיר ללקוח שאלת בירור או שאלת נגד (Reverse Question) — הוסף שורה נפרדת בסוף שמתחילה במדויק ב-"🔄 שאלת המשך מומלצת:" ולאחריה שאלה קונקרטית אחת. אם המצב לא מתאים לזה, אל תוסיף את השורה הזו בכלל.\\n\\nזו תהיה שיחה מתמשכת עם כמה שאלות ברצף. אם שאלה עוקבת היא כללית או מנוסחת בקצרה (למשל "תן לי עוד אחת", "ומה עוד?", "תסביר יותר"), התייחס אליה כהמשך של הנושא שדיברנו עליו לאחרונה — אלא אם היא מנוסחת בבירור כמעבר לנושא אחר.\\n\\n<מסמך>\\n' + documentText + '\\n</מסמך>\\n\\nשאלה ראשונה: ' + question;
+    } else {
+      userTurnContent = question;
+    }
+    conversationHistory.push({ role: 'user', content: userTurnContent });
+    trimHistory();
+
+    // A saved correction for this exact question skips the model call
+    // entirely — instant, and guaranteed to match what you approved.
+    if(savedCorrections[questionKey] !== undefined){
+      const saved = savedCorrections[questionKey];
+      addMessage('bot', saved);
+      openAnswerWindow(questionKey, saved);
+      questionEl.value = saved;
+      conversationHistory.push({ role: 'assistant', content: saved });
+      trimHistory();
+      sendBtn.disabled = false;
+      return;
+    }
+
+    const botMsg = addMessage('bot loading', 'מחפש תשובה במסמך…');
+    openAnswerWindow(questionKey, 'מחפש תשובה במסמך…');
+
+    let accumulated = '';
+    let firstTokenReceived = false;
+
+    try{
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 300,
+          stream: true,
+          messages: conversationHistory
+        })
+      });
+
+      if(!response.ok || !response.body){
+        throw new Error('bad response: ' + response.status);
+      }
+
+      // Stream the answer in as it's generated — feels close to instant
+      // since text starts appearing right away instead of after the whole
+      // answer is ready. It streams into both the compact log bubble and
+      // the floating answer window at the same time.
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while(true){
+        const { value, done } = await reader.read();
+        if(done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for(const line of lines){
+          if(!line.startsWith('data:')) continue;
+          const jsonStr = line.slice(5).trim();
+          if(!jsonStr || jsonStr === '[DONE]') continue;
+          try{
+            const evt = JSON.parse(jsonStr);
+            if(evt.type === 'content_block_delta' && evt.delta && evt.delta.type === 'text_delta'){
+              if(!firstTokenReceived){
+                botMsg.textContent = '';
+                botMsg.classList.remove('loading');
+                firstTokenReceived = true;
+              }
+              accumulated += evt.delta.text;
+              botMsg.textContent = accumulated;
+              answerContentEl.textContent = accumulated;
+              logEl.scrollTop = logEl.scrollHeight;
+            }
+          }catch(e){ /* partial/incomplete JSON line — ignore, next chunk completes it */ }
+        }
+      }
+
+      if(!accumulated){
+        botMsg.classList.remove('loading');
+        botMsg.textContent = 'לא התקבלה תשובה מהמערכת.';
+        answerContentEl.textContent = 'לא התקבלה תשובה מהמערכת.';
+        conversationHistory.pop(); // failed turn — don't poison history with an empty reply
+      } else {
+        conversationHistory.push({ role: 'assistant', content: accumulated });
+        // Only mirror into the input box once the answer is complete — not
+        // on every streamed chunk — so you can still type your next
+        // question while this one is still coming in.
+        questionEl.value = accumulated;
+      }
+    }catch(err){
+      botMsg.classList.remove('loading');
+      botMsg.classList.add('err');
+      botMsg.textContent = 'משהו נכשל בפנייה. נסה שוב.';
+      answerContentEl.textContent = 'משהו נכשל בפנייה. נסה שוב.';
+      conversationHistory.pop(); // failed turn — remove the dangling user message too
+      console.error('ai question failed', err);
+    }finally{
+      sendBtn.disabled = false;
+    }
+  }
+
+  function sendCurrentInput(){
+    const question = questionEl.value.trim();
+    if(!question) return;
+    questionEl.value = '';
+    ask(question);
+  }
+
+  sendBtn.addEventListener('click', sendCurrentInput);
+  questionEl.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' && !e.shiftKey){
+      e.preventDefault();
+      sendCurrentInput();
+    }
+  });
+  document.querySelectorAll('.chat-quick-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=> ask(btn.dataset.prompt));
+  });
+})();
+</script>
+</body>
+</html>
